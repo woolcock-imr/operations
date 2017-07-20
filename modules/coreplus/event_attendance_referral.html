@@ -1,0 +1,156 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a>
+        <span class=tab__ID></span>Select event <select id=Event__ID type=select></select> <select id=YY__ID type=select></select>
+        <a id=qquery__ID >Query</a>
+        <a id=export__ID >Export</a>
+    	<span class=tab__ID></span>New Referrers
+		<span id=elapsed__ID style='float:right'></span>
+    </div>
+	<div id=table__ID>
+        <table id=grid__ID></table>
+    </div>
+</section>
+<script>
+ function F__ID(){
+    //------------------------
+    VmInclude:__PARTS__/grid/grid.js
+    VmInclude:__PARTS__/style/ease-in-out.js
+    //------------------------
+    //number dropdown
+    var $List=$('#Event__ID');
+    sql="select event=@('Event_Name'),event_uid=UID from [TABLE-20006853]";
+    var req_data={cmd:'query_records',sql:sql};
+    $VmAPI.request({data:req_data,callback:function(res){
+        for(var i=0;i<res.records.length;i++){
+            var event=res.records[i].event;
+            var event_uid=res.records[i].event_uid;
+            $List.append(  $('<option></option>').val(event_uid).html(event))
+        }
+    }});
+    $List.val();
+    //---------------------------------------------
+    //number dropdown
+    var $List2=$('#YY__ID');
+    var y=new Date().getFullYear();
+    for(var i=0;i<7;i++){
+        $List2.append(  $('<option></option>').val(y-i).html(y-i)  );
+    }
+    $List2.val(y);
+    //---------------------------------------------
+    _fields="Referrer_Name,Provider Number|ProvNo,Total,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec";
+    var gp_records=[];
+    //-------------------------------------
+    $('#qquery__ID').on('click',function(){
+        var sql="with attendees as ( select gp_uid=@('GP_uid') from [TABLE-20006854] where @('Event_uid')=@S1 ) ";
+        sql+=" select Referrer_Name=@('Name')+' '+@('Surname'),ProvNum=V1 from [TABLE-20007231] join attendees on UID=gp_uid ";
+        var req={cmd:'query_records',sql:sql,s1:$('#Event__ID').val()}
+        $VmAPI.request({data:req,callback:function(res){
+            gp_records=res.records;
+            _set_req(); _request_data();
+        }})
+    })
+    //-------------------------------------
+    var check_gp=function(ProvNum){
+        for(var i=0;i<gp_records.length;i++){
+            if(gp_records[i].ProvNum==ProvNum) return gp_records[i].Referrer_Name;
+        }
+        return 0;
+    }
+    //-------------------------------------
+    var data_process=function(tem_records){
+        if(gp_records.length==0) return [];
+        var results={}
+        for(var i=0;i<tem_records.length;i++){
+            var month=tem_records[i].V2;
+            for(var p in tem_records[i]){
+                if(p!='V2'){
+                    var ProvNo=p.substring(2);
+                    if(results[ProvNo]==undefined){
+                        var Referrer_Name=check_gp(ProvNo);
+                        if(Referrer_Name!==0){
+                            results[ProvNo]={Referrer_Name:Referrer_Name}
+                        }
+                    }
+                    if(results[ProvNo]!=undefined){
+                        switch(month){
+                            case '1': results[ProvNo].M1=tem_records[i][p]; break;
+                            case '2': results[ProvNo].M2=tem_records[i][p]; break;
+                            case '3': results[ProvNo].M3=tem_records[i][p]; break;
+                            case '4': results[ProvNo].M4=tem_records[i][p]; break;
+                            case '5': results[ProvNo].M5=tem_records[i][p]; break;
+                            case '6': results[ProvNo].M6=tem_records[i][p]; break;
+                            case '7': results[ProvNo].M7=tem_records[i][p]; break;
+                            case '8': results[ProvNo].M8=tem_records[i][p]; break;
+                            case '9': results[ProvNo].M9=tem_records[i][p]; break;
+                            case '10': results[ProvNo].M10=tem_records[i][p]; break;
+                            case '11': results[ProvNo].M11=tem_records[i][p]; break;
+                            case '12': results[ProvNo].M12=tem_records[i][p]; break;
+                        }
+                    }
+                }
+            }
+        }
+        var I=0;
+        for(var i=0;i<gp_records.length;i++){
+            var ProvNo=gp_records[i].ProvNum;
+            var Referrer_Name=gp_records[i].Referrer_Name;
+            if(ProvNo=='0'){
+                I--;
+                results[I.toString()]={Referrer_Name:Referrer_Name,M1:0,M2:0,M3:0,M4:0,M5:0,M6:0,M7:0,M8:0,M9:0,M10:0,M11:0,M12:0}
+            }
+            else if(results[ProvNo]==undefined){
+                results[ProvNo]={Referrer_Name:Referrer_Name,M1:0,M2:0,M3:0,M4:0,M5:0,M6:0,M7:0,M8:0,M9:0,M10:0,M11:0,M12:0}
+            }
+        }
+        var r=[];
+        for(var p in results){
+            var record={}
+            record.ProvNo=p;
+            record.Referrer_Name=results[p].Referrer_Name;
+            record.Total=0;
+            record.Jan='0'; if(results[p].M1!=undefined){ record.Jan=results[p].M1; record.Total+=parseInt(results[p].M1);}
+            record.Feb='0'; if(results[p].M2!=undefined){ record.Feb=results[p].M2; record.Total+=parseInt(results[p].M2);}
+            record.Mar='0'; if(results[p].M3!=undefined){ record.Mar=results[p].M3; record.Total+=parseInt(results[p].M3);}
+            record.Apr='0'; if(results[p].M4!=undefined){ record.Apr=results[p].M4; record.Total+=parseInt(results[p].M4);}
+            record.May='0'; if(results[p].M5!=undefined){ record.May=results[p].M5; record.Total+=parseInt(results[p].M5);}
+            record.Jun='0'; if(results[p].M6!=undefined){ record.Jun=results[p].M6; record.Total+=parseInt(results[p].M6);}
+            record.Jul='0'; if(results[p].M7!=undefined){ record.Jul=results[p].M7; record.Total+=parseInt(results[p].M7);}
+            record.Aug='0'; if(results[p].M8!=undefined){ record.Aug=results[p].M8; record.Total+=parseInt(results[p].M8);}
+            record.Sep='0'; if(results[p].M9!=undefined){ record.Sep=results[p].M9; record.Total+=parseInt(results[p].M9);}
+            record.Oct='0'; if(results[p].M10!=undefined){ record.Oct=results[p].M10; record.Total+=parseInt(results[p].M10);}
+            record.Nov='0'; if(results[p].M11!=undefined){ record.Nov=results[p].M11; record.Total+=parseInt(results[p].M11);}
+            record.Dec='0'; if(results[p].M12!=undefined){ record.Dec=results[p].M12; record.Total+=parseInt(results[p].M12);}
+            r.push(record);
+        }
+        return r;
+    }
+    //-------------------------------------
+    _data_process=function(){
+        $vm.alert('Working hard...');
+        var r=_records;
+        _records=[];
+        setTimeout(function(){
+            _records=data_process(r);
+            _simple_render();
+            $vm.close_alert();
+        }, 100);
+    }
+    //-------------------------------------
+    _set_req=_set_req_export=function(){
+        var sql="select V2,Information from [TABLE-"+_db_pid+"] where V1=@I1 ";
+        _req={cmd:'query_records',sql:sql,i1:$('#YY__ID').val()}
+    }
+    //-------------------------------------
+    var _request_data_export=function(){
+        $VmAPI.request({data:_req,callback:function(res){
+            _records=data_process(res.records);
+            _export_data(_filename);
+        }})
+    }
+    //-------------------------------------
+ }
+</script>
+<style>
+    VmInclude:__PARTS__/grid/grid.css
+</style>

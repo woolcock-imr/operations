@@ -58,6 +58,24 @@
 								"name":"New Referrers without referrers name",
 								"table_id":"20006813",
 								"url":"/modules/coreplus/coreplus_new_referrers.html"
+							},
+							{
+								"module_id":"c_003",
+								"name":"New Referrers with referrers name",
+								"table_id":"20006813",
+								"url":"/modules/coreplus/coreplus_new_referrers_with_name.html"
+							},
+							{
+								"module_id":"c_004",
+								"name":"Referrals by Event Attendees",
+								"table_id":"20009755",
+								"url":"/modules/coreplus/event_attendance_referral.html"
+							},
+							{
+								"module_id":"c_005",
+								"name":"Yearly Referral Number by Provider Number",
+								"table_id":"20009755",
+								"url":"/modules/coreplus/yearly_referral_number.html"
 							}
 						]
 					},
@@ -67,10 +85,24 @@
 						[
 							{
 								"module_id":"cms_001",
+								"name":"CMS Referrer",
+								"table_id":"400449",
+								"url":"/modules/cms/cms_referrer.html"
+							},
+							{
+								"module_id":"cms_002",
 								"name":"Total number of sleep studies performed",
 								"table_id":"400448",
 								"url":"/modules/cms/sleep_study_total_number.html"
+							},
+							{
+								"module_id":"cms_002",
+								"name":"Number of sleep studies with medicare charge",
+								"table_id":"400448",
+								"url":"/modules/cms/sleep_study_medicare.html"
 							}
+
+
 						]
 					}
 				]

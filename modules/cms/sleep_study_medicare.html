@@ -4,12 +4,9 @@
         <span class=tab__ID></span><select id=YY__ID type=select></select>
         <a id=query__ID >Query</a>
         <a id=export__ID >Export</a>
-    	<span class=tab__ID></span>Total Number of Sleep Studies Performed
-		<span id=elapsed__ID style='float:right'></span>
+    	<span class=tab__ID></span>Number of Sleep Studies with Medicare Charge
     </div>
-	<div id=table__ID>
-        <table id=grid__ID></table>
-    </div>
+    <table id=grid__ID></table>
 </section>
 <script>
  function F__ID(){
@@ -31,18 +28,23 @@
     //-------------------------------------
     _set_req=_set_req_export=function(){
         var sql="with tb as( \
-    		 select	 ID, Item_No=dbo.F(Information,'Code'), Year=DATEPART(yy,DT1),\
-    		 MM=DATEPART(mm,DT1) from [TABLE-"+_db_pid+"] \
-    		 where DATEPART(yy,DT1)=@I1 and DT1<GetDate() \
-    		 and  DatePart(yy,DT1)=@I1 and  dbo.F(Information,'Cancelled')<>'on' \
-    		 and  dbo.F(Information,'Arrival_Status')<>'Did Not Arrive'\
-		 )\
-	    select Item_No,Jan=[1],Feb=[2],Mar=[3],Apr=[4],May=[5],Jun=[6],Jul=[7],Aug=[8],Sep=[9],Oct=[10],Nov=[11],Dec=[12]\
-		   from tb\
-    	PIVOT (\
-    		Count(ID) for MM in ([1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12]) \
-    	)p\
-    ";
+        		 select\
+        		 ID,\
+        		 [Item_No]=dbo.F(Information,'Code'),\
+        		 Year=DATEPART(yy,DT1),\
+        		 MM=DATEPART(mm,DT1)\
+        		 from [TABLE-"+_db_pid+"] \
+        		 where DATEPART(yy,DT1)=@I1 and DT1<GetDate() \
+        		 and  dbo.F(Information,'Code')<>'0' and LEN(dbo.F(Information,'Code'))<>0 \
+        		 and DatePart(yy,DT1)=@I1 and  dbo.F(Information,'Cancelled')<>'on' \
+        		 and  dbo.F(Information,'Arrival_Status')<>'Did Not Arrive'\
+        	)\
+        	select [Item_No],Jan=[1],Feb=[2],Mar=[3],Apr=[4],May=[5],Jun=[6],Jul=[7],Aug=[8],Sep=[9],Oct=[10],Nov=[11],Dec=[12]\
+        		   from tb\
+        	PIVOT (\
+        		Count(ID) for MM in ([1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12]) \
+        	)p\
+        ";
         _req={cmd:'query_records',sql:sql,i1:$('#YY__ID').val()}
     }
     //-------------------------------------

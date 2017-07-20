@@ -33,14 +33,14 @@ function F__ID(){
     var m=new Date().getMonth()+1;
     $List2.val(m);
     //---------------------------------------------
-    _fields="Provider Number|pnA, Number of referrals|N1";
+    _fields="Provider Name|RN,Provider Number|pnA, Number of referrals|N1";
     $('#query__ID').on('click',function(){ _set_req(); _request_data();  })
     //-------------------------------------
     _set_req=_set_req_export=function(){
-        var sql="with tb as (select pnA=V3,N1=Count (ID) from [TABLE-20006813] where DatePart(yy,DT2)=@I1 and DatePart(mm,DT2)=@I2 group by V3)"
+        var sql="with tb as (select pnA=V3,N1=Count (ID),RN=@('Referrer_Name')  from [TABLE-20006813] where DatePart(yy,DT2)=@I1 and DatePart(mm,DT2)=@I2 group by V3,@('Referrer_Name'))"
         sql+=", tb1 as (select pnB=V3,N0=Count(ID) from [TABLE-20006813] where DT2< DATEFROMPARTS(@I1,@I2,1) group by V3) "
-        sql+=", tb2 as (select N1,N0,pnA from tb left join tb1 on pnA=pnB ) "
-        sql+="select pnA,N1 from tb2 where N0=0 or N0 is NULL "
+        sql+=", tb2 as (select N1,N0,pnA,RN from tb left join tb1 on pnA=pnB ) "
+        sql+="select RN,pnA,N1 from tb2 where N0=0 or N0 is NULL order by pnA"
         _req={cmd:'query_records',sql:sql,i1:$('#YY__ID').val(),i2:$('#MM__ID').val()}
     }
     //-------------------------------------

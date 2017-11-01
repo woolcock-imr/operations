@@ -1,0 +1,90 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span><span id=name__ID></span>
+    </div>
+    <div style='clear:left;'>
+        <div class='nav__ID'>
+            <span>Personal Information</span>
+            <ul>
+                <li data-name=staff_public_info data-s=1>Public Information</li>
+                <li data-name=staff_private_info data-s=1>Private Information</li>
+                <li data-name=staff_personal_document data-s=1>Personal Documents</li>
+                <li data-name=staff_emergency_contact data-s=1>Emergency Contact</li>
+            </ul>
+            <br>
+        </div>
+        <div class='nav__ID'>
+            <span>HR Records</span>
+            <ul>
+                <li data-name=hr_document data-s=1>HR Documents</li>
+            </ul>
+            <br>
+        </div>
+        <div class='nav__ID'>
+            <span>New Appointment</span>
+            <ul>
+                <li data-name=one_staff_appointment data-s=1>Staff appointment request</li>
+                <li data-name=one_student_appointment data-s=1>Student appointment request</li>
+                <li data-name=one_computer_and_access data-s=1>Computer and access card request</li>
+                <li data-name=one_lab_access data-s=1>Laboratory access and working with biological samples or in clinic request</li>
+            </ul>
+            <br>
+        </div>
+    </div>
+</section>
+<script>
+    //---------------------------------------------
+    function F__ID(){
+        //---------------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        var _op,_module=$vm.module_list[$vm.vm['__ID'].name],_app_id=_module.var.app_id;
+        //---------------------------------------------
+        var _module_list=function(){
+            var L=$vm.module_list,A=_app_id,B=$vm.hosting_path+'/woolcock-imr/operation';
+            var v={
+                app_id:_app_id,
+            }
+            L[A+'staff_public_info']=             {table_id:'20009572',var:v,url:B+'/modules/hr/child_records/public_info.html'};
+            L[A+'staff_private_info']=            {table_id:'20009581',var:v,url:B+'/modules/hr/child_records/private_info.html'};
+            L[A+'staff_personal_document']=       {table_id:'20009582',var:v,url:B+'/modules/hr/child_records/personal_documents.html'};
+            L[A+'staff_emergency_contact']=       {table_id:'20009583',var:v,url:B+'/modules/hr/child_records/emergency_contact.html'};
+            L[A+'hr_document']=                   {table_id:'20009584',var:v,url:B+'/modules/hr/child_records/hr_documents.html'};
+            L[A+'list_managers']=                 {table_id:'20002145',var:v};
+
+            L[A+'one_staff_appointment']=           {table_id:'20009574',var:v,url:B+'/modules/hr/child_records/request/staff_appointment.html',form_module:A+'one_staff_appointment_form'};
+            L[A+'one_staff_appointment_form']=      {table_id:'20009574',var:v,url:B+'/modules/my_area/hr/staff_appointment.form.html'};
+
+            L[A+'one_student_appointment']=           {table_id:'20009593',var:v,url:B+'/modules/hr/child_records/request/student_appointment.html',form_module:A+'one_student_appointment_form'};
+            L[A+'one_student_appointment_form']=      {table_id:'20009593',var:v,url:B+'/modules/my_area/hr/student_appointment_request.form.html'};
+
+            L[A+'one_computer_and_access']=           {table_id:'20009576',var:v,url:B+'/modules/hr/child_records/request/computer_and_access.html'};
+            L[A+'one_lab_access']=                    {table_id:'20009577',var:v,url:B+'/modules/hr/child_records/request/lab_access.html'};
+        }
+        _module_list();
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _op=$vm.vm['__ID'].op;
+            $('#name__ID').text(_op.staff_name);
+            _set_permissions();
+        });
+        //---------------------------------------------
+        _special_click_process=function(li){
+            var record_name=$(li).attr('data-name');
+            $vm.load_module_by_name(_app_id+record_name,$vm.root_layout_content_slot,{
+                staff_name:_op.staff_name,
+                staff_login_name:_op.staff_login_name,
+                staff_pid:_op.staff_pid,
+                staff_uid:_op.staff_uid,
+                sql_where:" PPID="+_op.staff_pid+" and PUID="+_op.staff_uid,
+            });
+        }
+        //-------------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.css
+    #D__ID{
+        background: url("__BASE__/vmiis/common-code/image/texture.png");
+    }
+</style>

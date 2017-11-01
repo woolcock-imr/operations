@@ -1,0 +1,110 @@
+<html>
+<head>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.0.min.js" type="text/javascript"></script>
+	<script>$vm={}; $VmAPI={};</script>
+	<script src="https://rt.woolcock.org.au/github/vmiis/VmAPI/distribution/vmapi.min.js?v=7" type="text/javascript"></script>
+	<script src="https://rt.woolcock.org.au/github/vmiis/VmFramework/distribution/vmframework.min.js?v=12" type="text/javascript"></script>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+<div class=C__ID__s>
+<p style='font-size:18pt;font-weight:bold;font-style:italic'>Car Booking
+</p><br>
+<p style='font-size:12pt;'>Please contact IT via <a href="support@woolcock.zendesk.com">support@woolcock.zendesk.com</a>
+for <b>access</b> and change of permission
+<br><br>
+<i>For internal users the normal <b>username</b> is your <b>unikey</b></i>
+</p>
+
+    <input id=username placeholder="Username" class=C__ID__input />
+    <br><input id=password placeholder="Password" class=C__ID__input type=password />
+    <br><span id="ErrMsg"></span>
+    <br><input id=signin type=button value='Sign in' class=C__ID__button /> <u id=forgot>Forgot Password?</u>
+
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+<script>
+	$('#signin').on('click',function(){
+		var web=window.location.toString().substring(0,window.location.toString().indexOf("signin.html"));
+	    $VmAPI.api_base=web;
+		$VmAPI.request({data:{cmd:'signin',username:$('#username').val(),password:$('#password').val()},callback:function(res){
+            $('#password__ID').val('');
+            if(res.ret=='1'){
+				$VmAPI.set_token(res.token,'',$('#username').val(),res.user_id,'');
+                window.location='https://rt.woolcock.org.au/operations.html?redirect=car_booking';
+            }
+            else{
+                $('#ErrMsg').text("Invalid username or password.");
+            }
+		}});
+	});
+	$('#forgot').on('click',function(){				window.location.href='signin_get_password.html';	});
+	$('#create_account').on('click',function(){		window.location.href='signin_create.html';	});
+
+</script>
+
+
+<style>
+.C__ID__s{
+    font: 18pt "Arial";
+    padding:80px;
+}
+@media all and (max-width: 480px){
+	.C__ID__s{
+    	padding-left:20px;
+	}
+}
+.C__ID__input{
+    height: 34px;
+    width:260px;
+    color: #555;
+    adisplay: inline-block;
+    padding: 1px 6px;
+    font-size: 10pt;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    margin-bottom: 0;
+}
+.C__ID__button {
+    margin:16px 0;
+    -webkit-appearance: button;
+    cursor: pointer;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.C__ID__button:hover{
+    background-color: #3276b1;
+    border-color: #285e8e;
+}
+.C__ID__s *{
+    margin: 6px 0;
+}
+.C__ID__s span{
+    color:#FF0000;
+    font: 12pt "Arial";
+}
+.C__ID__s u{
+	cursor:pointer;
+    font: 12pt "Arial";
+}
+</style>

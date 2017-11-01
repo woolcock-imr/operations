@@ -1,0 +1,50 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a>
+        <span class=tab__ID></span>
+        <span>Search this day:</span> <input type=text id=t1__ID placeholder="" style='width:80px;padding-left:3px' />
+        <a id=query__ID >Query</a>
+        <a id=export__ID >Export</a>
+    	<span class=tab__ID></span>Prolonged EEG MSLT/MWT (Item Number 11003)
+    </div>
+    <table id=grid__ID></table>
+</section>
+<script>
+function F__ID(){
+    //------------------------
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+    //-------------------------------------
+    $('#D__ID').on('load',function(){
+    //-------------------------------------
+        var today = new Date();
+        var month = today.getMonth(), year = today.getFullYear();
+        var firstDay = new Date(year, month, 1);
+        $('#t1__ID').datepicker({dateFormat:'dd/mm/yy'});
+        $('#t1__ID').val($.datepicker.formatDate('dd/mm/yy', today));
+    })
+    //---------------------------------------------
+    _fields="Date of Study|Study_Date,Name & D.O.B|S2,Type|Study_Type,Item #|Code,Cost,Reporting Dr|Reporter,Reported|Reported_text";
+    $('#query__ID').on('click',function(){ _set_req(); _request_data();  })
+    //-------------------------------------
+    _set_req=_set_req_export=function(){
+        var sql="select ID,DT1,S2, \
+         			Study_Date=@('Date'), patUID=@('Patient_uid'),\
+     	    		Code=@('Code'),Study_Type=@('Study_Type'),Project=@('Project'),\
+     	    		[Arrival_Status]=@('Arrival_Status'), \
+     		    	[Cancelled]=@('Cancelled'),Reporter=@('Reporting_Physician'), \
+                     Reported_text=@('Reported_text')\
+     			    from [TABLE-"+_db_pid+"] where ( @('Code')=11003 ) \
+                    and @('Study_Type') NOT LIKE '%Self funded%' \
+     			    and DT1=@T1 \
+                    and @('Report_Not_Required')<>'on' \
+     			    and @('Cancelled')<>'on' \
+     			    and @('Arrival_Status')<>'Did Not Arrive' "
+        _req={cmd:'query_records',sql:sql,t1:$('#t1__ID').val()}
+    }
+    //-------------------------------------
+}
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

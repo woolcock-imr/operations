@@ -1,0 +1,76 @@
+<section>
+      VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form|form_module,Givennames,Surname,Email,Supervisor,Group,A1a,A1b,A1c,A1d,Q1,Q2,Q3,Q4,Q5,Q6a,Q6b,Q6c,Q6d,Q6e,Q6f,Q7a,Q7b,Q7c,Q7d,Q8,Q9,Q10,Q11a,Q11b,Q11c,Q11d,Q12,Q13,Q14,Q15a,Q15b,Q15c,Q15d,Q16a,Q16b,Q16c,Q16d,Q16e,Q17a,Q17b,Q17c,Q17d,Q17e,Q18a,Q18b,Q18c,Q18d,Q19,Q20a,Q20b,Q20c,Q20d,Q20e,Q21a,Q21b,Q21c,Q21d,Q22,Q23,Q24,Q25a,Q25b,Q25c,Q25d";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'A1a':
+                case 'A1b':
+                case 'A1c':
+                case 'A1d':
+                case 'Q6a':
+                case 'Q6b':
+                case 'Q6c':
+                case 'Q6d':
+                case 'Q6e':
+                case 'Q6f':
+                case 'Q7a':
+                case 'Q7b':
+                case 'Q7c':
+                case 'Q7d':
+                case 'Q11a':
+                case 'Q11b':
+                case 'Q11c':
+                case 'Q11d':
+                case 'Q15a':
+                case 'Q15b':
+                case 'Q15c':
+                case 'Q15d':
+                case 'Q16a':
+                case 'Q16b':
+                case 'Q16c':
+                case 'Q16d':
+                case 'Q16e':
+                case 'Q17a':
+                case 'Q17b':
+                case 'Q17c':
+                case 'Q17d':
+                case 'Q17e':
+                case 'Q18a':
+                case 'Q18b':
+                case 'Q18c':
+                case 'Q18d':
+                case 'Q20a':
+                case 'Q20b':
+                case 'Q20c':
+                case 'Q20d':
+                case 'Q20e':
+                case 'Q21a':
+                case 'Q21b':
+                case 'Q21c':
+                case 'Q21d':
+                case 'Q25a':
+                case 'Q25b':
+                case 'Q25c':
+                case 'Q25d':
+                    td.html("<input type=checkbox />");
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                break;
+            }
+        }
+        //-------------------------------------
+        $('#D__ID').on('load',function(){ _set_req(); _request_data();})
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

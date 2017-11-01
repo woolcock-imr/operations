@@ -1,0 +1,117 @@
+<section>
+    <div id=toolbar__ID>
+          <a id=back__ID>Back</a>
+          <span class=tab__ID></span>
+          <select id=age__ID><option>Adult</option><option>Child</option><option>TcCO2</option></select>
+          Year: <select id=yy__ID type=text />
+          Month: <select id=mm__ID type=text />
+          <a id=query2__ID>Query</a>  <a id=export2__ID>Export</a>
+          <span id=title__ID></span>
+
+          <span id=elapsed__ID style='float:right'></span>
+    </div>
+	<div id=table__ID>
+        <table id=grid__ID></table>
+    </div>
+</section>
+<script>
+function F__ID(){
+	//-------------------------------------
+	VmInclude:__BASE__/vmiis/Common-Code/grid/grid.2.js
+	VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.2.js
+	//-------------------------------------
+	//year dropdown
+	var $List1=$('#yy__ID');
+	var y=new Date().getFullYear();
+	for(var i=0;i<10;i++){
+		$List1.append(  $('<option></option>').val(y-i).html(y-i)  );
+	}
+	$List1.val(y);
+	//-------------------------------------
+	//month dropdown
+	var $List2=$('#mm__ID');
+	var m=new Date().getMonth();
+	for(var i=0;i<12;i++){
+		$List2.append(  $('<option></option>').val(i+1).html(i+1)  );
+	}
+	$List2.val(m);
+	//---------------------------------------------
+	$('#new__ID').hide();
+	//-------------------------------------
+	var fields="Date of Study|I2_Date,Name & D.O.B|I2_Patient,Type|I2_Study_Type,Item #|I2_Code,Age,Cost,Outcome,Paid_on,Reporting Dr|I2_Reporting_Physician";
+	fields+=",_Hidden|Colour_2,_Hidden|Colour_3";
+	_fields="_Form,"+fields;
+    //-------------------------------------
+    $('#title__ID').html("<i>Management of Sleep Studies - Monthly</i> &bull; <b>Export of Studies paid on date</b>");
+	//-------------------------------------
+	$('#D__ID').on('load',function(){
+    })
+	$('#query2__ID').on('click',function(){ query_data(); })
+	$('#export2__ID').on('click',function(){ _export_current_data('Report-'+$('#age__ID').val()+'-'+$('#yy__ID').val()+'-'+$('#mm__ID').val()+'.csv'); })
+    //-------------------------------------
+	//-------------------------------------
+	_set_req=_set_req_export=function(){
+        var tcco2='';
+        if($('#age__ID').val()=='TcCO2') tcco2=" and @('Item11503')='on'";
+		var age=" age >17";
+		if( $('#age__ID').val()=='Child') age=" age <=17";
+        var sql0="SET DATEFORMAT dmy; ";
+        sql0+="with tb1 as (select ID,Information,PUID,DateTime,Author from [TABLE-20010715] where B1='True' and  convert(datetime,@('Paid_on'),103)>=@T1 and convert(datetime,@('Paid_on'),103)<@T2 )"
+        sql0+=",tb2 as (select DT1,Age=case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 999 end,Dr=@('Reporting_Physician'),Information2=Information,UID from [TABLE-400448] where DT1<convert(datetime,@S3,103) "+tcco2+")";
+		var sql=sql0+" select ID,UID,PUID,age,Information,Information2,DateTime,Author from tb1 join tb2 on PUID=UID where "+age+" order by Dr";
+		_req={cmd:'query_records',db_pid:_db_pid,sql:sql,t1:rep_date_start,t2:rep_date_end,s3:'01/'+max_month+'/'+max_year}
+	}
+	//-------------------------------------
+    var max_month;
+    var max_year;
+    var abbr_records;
+    var rep_date_end='';
+    var rep_date_start='';
+	var query_data=function(){
+        if($('#mm__ID').val()=='12') {max_month=1;max_year=parseInt($('#yy__ID').val())+1;}
+        else {max_month=parseInt($('#mm__ID').val())+1;max_year=parseInt($('#yy__ID').val());}
+        jQuery.ajaxSetup({async:false});
+		var sql="select a=@('Abbreviation'),f=@('Full_Name') from [TABLE-20010890]";
+		$VmAPI.request({data:{cmd:'query_records',sql:sql},callback:function(res){
+			abbr_records=res.records;
+        }})
+        var sql="select rep=DT1 from [TABLE-20011307] where V1=@i1 and V2=@i2";
+        $VmAPI.request({data:{cmd:'query_records',sql:sql,i1:$('#yy__ID').val(),i2:$('#mm__ID').val()},callback:function(res){
+			if(res.records.length>0) rep_date_end=res.records[0].rep;
+			//_set_req(); _request_data();
+		}})
+        var mon;
+        var yr;
+        if($('#mm__ID').val()=='1') {mon=12;yr=parseInt($('#yy__ID').val())-1;}
+        else {mon=parseInt($('#mm__ID').val())-1;yr=parseInt($('#yy__ID').val());}
+        $VmAPI.request({data:{cmd:'query_records',sql:sql,i1:yr.toString(),i2:mon.toString()},callback:function(res){
+			if(res.records.length>0) rep_date_start=res.records[0].rep;
+			//_set_req(); _request_data();
+		}})
+        jQuery.ajaxSetup({async:true});
+        if(rep_date_start=='' && rep_date_end=='') $vm.alert('Reporting Date missing in setup');
+        else {_set_req(); _request_data();}
+	}
+	//-------------------------------------
+	_data_process=function(){
+		for(var i=0;i<_records.length;i++){
+            if($('#age__ID').val()=='TcCO2'){
+                _records[i].I2_Code='11503';
+                _records[i].Cost=_records[i].Cost_11503;
+            }
+			var word1=_records[i].I2_Study_Type;
+			for(var j=0;j<abbr_records.length;j++){
+				var word2=abbr_records[j].f;
+				if(word1==word2){
+					_records[i].I2_Study_Type=abbr_records[j].a;
+				}
+			}
+		}
+	}
+	//-------------------------------------
+}
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.2.css
+</style>

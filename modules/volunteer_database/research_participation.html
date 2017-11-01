@@ -1,0 +1,50 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form,Volunteer,Project,Status,Start_date,End_date";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete,_Hidden|Volunteer_uid";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Volunteer':
+                    var sql="with tb as (select distinct name=@('First_Name')+' '+@('Last_Name')+' - '+@('Email'),UID from [TABLE-"+$vm.module_list[_app_id+'volunteer_registration_record'].table_id+"]) select name, value=name,value2=UID from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    break;
+                case 'Status':
+                    records[I].vm_custom[field]=true;
+                    var html="<select style='border:0;'>"
+                    html+="<option>---</option>";
+                    html+="<option>Screening</option>";
+                    html+="<option>Screening Failure</option>";
+                    html+="<option>Enrolled</option>";
+                    html+="<option>Withdrawn</option>";
+                    html+="<option>Completed</option>";
+                    html+="</select>"
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_select.js
+                    break;
+                case 'Start_date':
+                case 'End_date':
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_date.js
+                    break;
+            }
+        }
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data();  })
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.PPID='20008533';
+            dbv.PUID=record.Volunteer_uid;
+            return true;
+        };
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

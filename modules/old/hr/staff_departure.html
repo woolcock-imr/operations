@@ -1,0 +1,85 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form|form_module";
+
+        _fields+=",First name";
+        _fields+=",Surname";
+        _fields+=",_Hidden|Position";
+        _fields+=",_Hidden|Group";
+        _fields+=",_Hidden|Reporting to";
+        _fields+=",_Hidden|Project";
+        _fields+=",_Hidden|Last day";
+        _fields+=",_Hidden|Reason for leaving";
+        _fields+=",_Hidden|Room no";
+        _fields+=",_Hidden|Work station no";
+        _fields+=",_Hidden|Phone";
+        _fields+=",_Hidden|Security Swipe card";
+        _fields+=",_Hidden|Cancellation of University card access";
+        _fields+=",_Hidden|Key for office";
+        _fields+=",_Hidden|Key for Rooms";
+        _fields+=",_Hidden|Please list rooms where keys have been retrieved";
+        _fields+=",_Hidden|Key for under desk pedestal filing cabinet";
+        _fields+=",_Hidden|Keys for filing cabinets";
+        _fields+=",_Hidden|Laptop";
+        _fields+=",_Hidden|Software";
+        _fields+=",_Hidden|Manuals";
+        _fields+=",_Hidden|Other";
+        _fields+=",_Hidden|Other_Details";
+        _fields+=",_Hidden|Have you ensured that you have access to the employees computer data and files";
+        _fields+=",_Hidden|Have you checked that the voicemail security code is set to 0000";
+        _fields+=",_Hidden|Have samples been identified";
+        _fields+=",_Hidden|Have perishable items been dealt with";
+        _fields+=",_Hidden|Comments";
+
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+            }
+        }
+        //---------------------------------------------
+        _after_submit=function(I,res,n,_dbv){
+            var a=confirm("Do you want to send alert email?");
+            if(a===true) sent_emails(I);
+        }
+        //-------------------------------------
+        var sent_emails=function(I){
+            sent_emails_special(I,$vm.module_list['list_it'].table_id);
+            sent_emails_special(I,$vm.module_list['list_lab'].table_id);
+            sent_emails_special(I,$vm.module_list['list_pi'].table_id);
+            sent_emails_special(I,$vm.module_list['list_hr'].table_id);
+        };
+    	//---------------------------------------------
+        var sent_emails_special=function(I,pid){
+            var Body="Staff departure <b>"+_records[I].First_name+" "+_records[I].Surname+"</b><br><br><a href='https://rt.woolcock.org.au/new_appointment_login.aspx'>HR Staff Departure Form (Login needed)</a>";
+            Body+="<br><br>";
+            Body+="<br>First Name: "+_records[I].First_name;
+            Body+="<br>Last Name: "+_records[I].Surname;
+            var sql="select top 1 List=@('List') from [TABLE-"+pid+"] where pid="+pid;
+            $VmAPI.request({data:{cmd:'query_records',sql:sql},callback:function(res){
+                if(res.records.length>0){
+                    var To=res.records[0].List.replace(/\r/g,"\n").replace(/\n\n/g,",").replace(/,,/g,",").replace(/,\s*$/, "");
+                    var From_Address="noresponse@woolcock.org.au";
+                    var From_Name="Database Administrator";
+                    var Title="Staff departure alert";
+                    $VmAPI.request({data:{cmd:'send_email',From_Address:From_Address,From_Name:From_Name,To:To,Title:Title,Body:Body},callback:function(res){
+                        alert('The alert email (to: '+To+') has been sent out');
+                    }})
+                }
+            }});
+        }
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data();  })
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

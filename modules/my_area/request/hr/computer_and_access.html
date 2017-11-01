@@ -1,0 +1,187 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid_without_export.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        _record_type='s2';
+        //-------------------------------------
+        _fields="_Form,Name,Confirmed_by,Approved_by,_Approved_Info,Group_Leader_for_Approval,_Alert";
+        _fields+=",_gridHidden|Computer";
+        _fields+=",_gridHidden|UniKey";
+        _fields+=",_gridHidden|Security_card_access,_Hidden|Notify";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete,_Hidden|Name_uid";
+        //-------------------------------------
+        var list_managers='';
+        var list_sql="select Name=S1,Email=S2,Login_Name=S3 from [TABLE-"+$vm.module_list[_app_id+'managers'].table_id+"]";
+        var req={cmd:'query_records',sql:list_sql};
+        jQuery.ajaxSetup({async:false});
+        $VmAPI.request({data:req,callback:function(res){
+            if(res.records.length>0){
+                list_managers='';
+                for(var i=0;i<res.records.length;i++){
+                    if(list_managers!='') list_managers+=','
+                    list_managers+=res.records[i].Name+";"+res.records[i].Name+"/"+res.records[i].Email+"/"+res.records[i].Login_Name;
+                }
+            }
+        }});
+        jQuery.ajaxSetup({async:true});
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Name':
+                    var sql="with tb as (select distinct name=S3,UID from [TABLE-"+$vm.module_list[_app_id+'my_public_info'].table_id+"]) select name, value=name,value2=UID from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    break;
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Approved_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approved_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by=='') return;
+                    td.html("<u style='cursor:pointer'>Approved Info</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name(_app_id+'my_hr_approved_info_s3',$vm.root_layout_content_slot,
+                            {rid:records[I].ID,pid_uid:_db_pid+'/'+records[I].UID}
+                        )
+                    });
+                    break;
+                case 'UniKey':
+                    var html="<select style='border:0;'>\
+                            <option>Never been an employee or student at the University of Sydney</option>\
+                            <option>Current / previous employee of the University of Sydney</option>\
+                            <option>Current / previous student of the University of Sydney</option>\
+                            <option>Don't know</option>\
+                        </select>\
+                    ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_select.js
+                    break;
+                case 'Computer':
+                    td.html('<input type=checkbox /> Computer required');
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                    break;
+                case 'Security_card_access':
+                    td.html('<input type=checkbox /> Security card access required');
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                    break;
+                case 'Group_Leader_for_Approval':
+                    var html="<select style='border:0;''></select>";
+                    records[I].vm_custom[field]=true;
+                    td.html(html)
+                    td.find('select').on('input', function(){
+                        set_value($(this).val(),records,I,field);
+                    });
+                    $vm.set_dropdown_list_from_text(td.find('select'),list_managers);
+                    td.find('select').val(records[I][field])
+                    break;
+                case '_Alert':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].ID!==undefined && records[I].ID!==null && records[I].Approved_by==''){
+                        var html="<u style='cursor:pointer'>Send email to the manager for approval</u>";
+                        td.html(html)
+                        td.find('u').on('click',function(){
+                            var info=make_approved_info(records[I]);
+                            $vm.load_module_by_name(_app_id+'my_computer_and_access_email_to_manager',$vm.root_layout_content_slot,
+                                {rid:records[I].ID,info:info,manager:records[I].Group_Leader_for_Approval}
+                            )
+                        })
+                    }
+                    break;
+                    /*
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].ID!==undefined && records[I].ID!==null
+                        && records[I].Approved_by!='' &&
+                        (records[I].Confirmed_by==undefined || records[I].Confirmed_by==null || records[I].Confirmed_by=='')
+                    ){
+                        var html="<u style='cursor:pointer'>Confirming</u>";
+                        td.html(html)
+                        td.find('u').on('click',function(){
+                            var title=records[I].Name+', computer and access card request confirmed by '+$vm.user;
+                            $vm.load_module_by_name(_app_id+'hr_confirming',$vm.root_layout_content_slot,
+                                {rid:records[I].ID,ppid:_db_pid,puid:records[I].UID,
+                                    title:title,notify:records[I].Notify}
+                            )
+                        })
+                    }
+                    else if(records[I].Confirmed_by==''){
+                        td.html(records[I].Confirmed_by);
+                    }
+                    break;
+                    */
+            }
+        }
+        //-------------------------------------
+        var make_approved_info=function(record){
+            var info='';
+            var items=_fields.split(',');
+            for(var i=0;i<items.length;i++){
+                var d=items[i].split('|');
+                var n=d[0];
+                if(d.length==3 || (d.length==2 && n[0]=='_') ) n=d[1];
+                var p=d.pop();
+                var v=record[p];
+                if(v!=undefined && v!=''){
+                    if(p!=='DateTime' && p!=='Author' && p!='Name_uid' && p!='Group_Leader_for_Approval' && p!='Notify'){
+                        info+=n.replace(/_/g,' ')+": "+v+"\r\n";
+                    }
+                }
+            }
+            info=info.replace(/: 1/g, ': required');
+            info=info.replace(/: 0/g, ': not required');
+
+            info=info.replace(/\r\n/g,'<br>');
+            return info;
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            if(record.Computer=="1" || record.Security_card_access=="1") record.Notify='it';
+            dbv.S1=record.Name;
+            dbv.S3=record.Group_Leader_for_Approval.split('/').pop();
+            dbv.PPID='20009572';    //staff pid
+            dbv.PUID=record.Name_uid;
+            if(record.Name_uid==''){
+                alert("Please select a person.");
+                return false;
+            }
+            return true;
+        };
+        //-------------------------------------
+        _set_req=function(){
+            _req={cmd:'query_records_s2',db_pid:_db_pid,fields:'ID,UID,Information,DateTime,Author',
+            s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+        _data_process_after_render=function(sr){
+            if(sr=='grid'){
+                $('#grid__ID tr').each(function(){
+                    var Approved_by="";
+                    var _Delete="";
+                    $(this).find('td').each(function(){
+                        var col = $(this).parent().children().index($(this));
+                        var column_name=$('#grid__ID th:nth-child('+(col+1)+')').attr('data-header');
+                        //-------------------------
+                        if(column_name=='Approved_by') Approved_by=$(this);
+                        if(column_name=='_Delete') _Delete=$(this);
+                    })
+                    if(Approved_by!="" && Approved_by.html()!=''){
+                        if(_Delete!="") _Delete.html('');
+                    }
+                })
+            }
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

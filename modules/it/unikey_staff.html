@@ -1,0 +1,56 @@
+<section>
+      VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        _fields="_Form,Staff_Name,_Staff_Info,_Hidden|Login_Name,Unikey,Expiry,Additional_Information";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete,_Hidden|Staff_Name_uid";
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Staff_Name':
+                    var staff_pid='20009572';
+                    var sql="with tb as (select distinct name=S3,login=S2,UID from [TABLE-"+staff_pid+"]) select name, value=name,value2=UID,field_Login_Name=login from tb where name like '%'+@S1+'%' ";
+                    var callback=function(){
+                        var next_td=td.next('td');
+                        var html="<u style='cursor:pointer'>View</u>";
+                        next_td.html(html);
+                        next_td.find('u').data('staff_login_name',records[I].Login_Name)
+                        next_td.find('u').on('click',function(){
+                            var staff_login_name=$(this).data('staff_login_name');
+                            $vm.load_module_by_name(_app_id+'staff_public_info',$vm.root_layout_content_slot,{staff_login_name:staff_login_name,readonly:1});
+                        })
+                    }
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto_with_callback.js
+                    break;
+                case '_Staff_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Staff_Name_uid==undefined || records[I].Staff_Name_uid=='') return;
+                    var html="<u style='cursor:pointer'>View</u>";
+                    td.html(html);
+                    td.find('u').data('staff_login_name',records[I].Login_Name)
+                    td.find('u').on('click',function(){
+                        var staff_login_name=$(this).data('staff_login_name');
+                        $vm.load_module_by_name(_app_id+'staff_public_info',$vm.root_layout_content_slot,{staff_login_name:staff_login_name,readonly:1});
+                    })
+                    break;
+            }
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.S1=record.Unikey;
+            dbv.S2=record.Login_Name;
+            return true;
+        };
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data(); })
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

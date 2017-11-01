@@ -1,0 +1,22 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span>Temperature monitoring</span>
+    </div>
+    <iframe id=id2__ID name=id2 style="border:0px;height:100%;width:100%" src='https://rt.woolcock.org.au/temperature_monitoring/temperature_monitoring.aspx'></iframe>
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            var top1=$('#id2__ID').offset().top;
+    		$('#id2__ID').css("height",($(window).height()-top1)+'px');
+        })
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

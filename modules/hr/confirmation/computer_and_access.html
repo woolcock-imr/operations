@@ -1,0 +1,113 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form,Request_ID,Name,_Confirming,Confirmed_by,Approved_by,_Approved_Info";
+        _fields+=",_gridHidden|Computer";
+        _fields+=",_gridHidden|UniKey,";
+        _fields+=",_gridHidden|Security_card_access";
+        _fields+=",_Hidden|Notify";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            $('#new__ID').hide();
+            $('#save__ID').hide();
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Request_ID':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].UID!=undefined) td.text(_db_pid+'-'+records[I].UID);
+                    break;
+                case 'Name':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Confirming':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].ID!==undefined && records[I].ID!==null
+                        && records[I].Approved_by!='' &&
+                        (records[I].Confirmed_by==undefined || records[I].Confirmed_by==null || records[I].Confirmed_by=='')
+                    ){
+                        var html="<u style='cursor:pointer'>Confirming</u>";
+                        td.html(html)
+                        td.find('u').on('click',function(){
+                            var email_title=records[I].Name+', computer and access request confirmed by '+$vm.user;
+                            $vm.load_module_by_name(_app_id+'hr_confirming',$vm.root_layout_content_slot,
+                                {rid:records[I].ID,pid:_db_pid,uid:records[I].UID,
+                                    title:email_title,notify:records[I].Notify}
+                            )
+                        })
+                    }
+                    else if(records[I].Confirmed_by==''){
+                        td.html(records[I].Confirmed_by);
+                    }
+                    break;
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Approved_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approved_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by=='') return;
+                    td.html("<u style='cursor:pointer'>Approved Info</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name(_app_id+'approved_info',$vm.root_layout_content_slot,
+                            {rid:records[I].ID,pid_uid:_db_pid+'/'+records[I].UID}
+                        )
+                    });
+                    break;
+                case 'UniKey':
+                    var html="<select style='border:0;'>\
+                            <option>Never been an employee or student at the University of Sydney</option>\
+                            <option>Current / previous employee of the University of Sydney</option>\
+                            <option>Current / previous student of the University of Sydney</option>\
+                            <option>Don't know</option>\
+                        </select>\
+                    ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_select.js
+                    break;
+                case 'Computer':
+                    td.html('<input type=checkbox /> Computer required');
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                    break;
+                case 'Security_card_access':
+                    td.html('<input type=checkbox /> Security card access required');
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                    break;
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].ID!==undefined && records[I].ID!==null
+                        && records[I].Approved_by!='' &&
+                        (records[I].Confirmed_by==undefined || records[I].Confirmed_by==null || records[I].Confirmed_by=='')
+                    ){
+                        var html="<u style='cursor:pointer'>Confirming</u>";
+                        td.html(html)
+                        td.find('u').on('click',function(){
+                            var title=records[I].Name+', computer and access card request confirmed by '+$vm.user;
+                            $vm.load_module_by_name(_app_id+'hr_confirming',$vm.root_layout_content_slot,
+                                {rid:records[I].ID,ppid:_db_pid,puid:records[I].UID,
+                                    title:title,notify:records[I].Notify}
+                            )
+                        })
+                    }
+                    else if(records[I].Confirmed_by==''){
+                        td.html(records[I].Confirmed_by);
+                    }
+                    break;
+            }
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

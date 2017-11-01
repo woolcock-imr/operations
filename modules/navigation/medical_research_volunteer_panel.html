@@ -1,0 +1,95 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span><span id=name__ID></span>
+    </div>
+    <div style='clear:left;'>
+        <div class='nav__ID'>
+            <span>Volunteer Information</span>
+            <ul>
+                <li data-name=vd_demographic_child data-s=1>Demographic
+                </li>
+            </ul>
+            <br>
+            <span>Subscription</span>
+            <ul>
+                <li data-name=vd_subscription_child data-s=1>Medical research and newsletters
+                </li>
+            </ul>
+            <br>
+            <span>Medical Status</span>
+            <ul>
+                <li data-name=vd_diagnose_child data-s=1>Diagnosed Conditions
+                </li>
+            </ul>
+            <br>
+            <span>Management</span>
+            <ul>
+                <li data-name=vd_call_log_child data-s=1>Call Log
+                </li>
+                <li data-name=vd_research_participation_child data-s=1>Research Participation
+                </li>
+            </ul>
+            <br>
+    </div>
+</section>
+<script>
+    //---------------------------------------------
+    function F__ID(){
+        //---------------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        var _op,_module=$vm.module_list[$vm.vm['__ID'].name],_app_id=_module.var.app_id;
+        //---------------------------------------------
+        var _module_list=function(){
+            var L=$vm.module_list,A=_app_id,B=$vm.hosting_path+'/'+$vm.repository, H=$vm.hosting_path;
+            var v={
+                app_id:_app_id,
+            }
+            L[A+'vd_demographic_child']       ={table_id:'20008533',var:v,url:H+'/woolcock-imr/operation/modules/volunteer_database/registration_demographic.child.html'};
+            L[A+'vd_subscription_child']      ={table_id:'20008533',var:v,url:H+'/woolcock-imr/operation/modules/volunteer_database/registration_subscription.child.html'};
+            L[A+'vd_diagnose_child']          ={table_id:'20008533',var:v,url:H+'/woolcock-imr/operation/modules/volunteer_database/registration_diagnose.child.html'};
+            L[A+'vd_call_log_child']          ={table_id:'20009655',var:v,url:H+'/woolcock-imr/operation/modules/volunteer_database/call_log.child.html'};
+            L[A+'vd_research_participation_child']          ={table_id:'20009667',var:v,url:H+'/woolcock-imr/operation/modules/volunteer_database/research_participation.child.html'};
+        }
+        _module_list();
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _op=$vm.vm['__ID'].op;
+            $('#name__ID').text(_op.volunteer_name);
+            _set_permissions();
+        });
+        //---------------------------------------------
+        _special_click_process=function(li){
+            var record_name=$(li).attr('data-name');
+            switch(record_name){
+                case 'vd_demographic_child':
+                case 'vd_subscription_child':
+                case 'vd_diagnose_child':
+                    $vm.load_module_by_name(_app_id+record_name,undefined,{
+                        volunteer_name:_op.volunteer_name,
+                        volunteer_login_email:_op.volunteer_login_email,
+                        volunteer_pid:_op.volunteer_pid,
+                        volunteer_uid:_op.volunteer_uid,
+                        sql_where:" PPID="+_op.volunteer_pid+" and PUID="+_op.volunteer_uid,
+                    });
+                    break;
+                default:
+                    $vm.load_module_by_name(_app_id+record_name,$vm.root_layout_content_slot,{
+                        volunteer_name:_op.volunteer_name,
+                        volunteer_login_email:_op.volunteer_login_email,
+                        volunteer_pid:_op.volunteer_pid,
+                        volunteer_uid:_op.volunteer_uid,
+                        sql_where:" PPID="+_op.volunteer_pid+" and PUID="+_op.volunteer_uid,
+                    });
+                    break;
+            }
+        }
+        //-------------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.css
+    #D__ID{
+        background: url("__BASE__/vmiis/common-code/image/texture.png");
+    }
+</style>

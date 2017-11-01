@@ -1,0 +1,130 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid_without_export.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form,Name,_Approving,Approved_by,_Approved_Info";
+        _fields+=",_gridHidden|Group_Leader_for_Approval";
+        _fields+=",_gridHidden|Type_of_student,Start_date";
+        _fields+=",_Hidden|Notify";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Hidden|Name_uid";
+        //-------------------------------------
+        var list_managers='';
+        var list_sql="select Name=S1,Email=S2,Login_Name=S3 from [TABLE-"+$vm.module_list[_app_id+'managers'].table_id+"]";
+        var req={cmd:'query_records',sql:list_sql};
+        jQuery.ajaxSetup({async:false});
+        $VmAPI.request({data:req,callback:function(res){
+            if(res.records.length>0){
+                list_managers='';
+                for(var i=0;i<res.records.length;i++){
+                    if(list_managers!='') list_managers+=','
+                    list_managers+=res.records[i].Name+";"+res.records[i].Name+"/"+res.records[i].Email+"/"+res.records[i].Login_Name;
+                }
+            }
+        }});
+        jQuery.ajaxSetup({async:true});
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            $('#new__ID').hide();
+            $('#save__ID').hide();
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Name':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approving':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by!='') return;
+                    td.html("<u style='cursor:pointer'>Approving</u>");
+                    td.find('u').on('click',function(){
+
+                        var title=records[I].Name+', computer and access card request approved by '+$vm.user;
+                        var info="Name:"+records[I].Name;
+                        var a='required'; if(records[I].Computer=='0') a='not required';
+                        info+="\r\nComputer:"+a;
+                        info+="\r\nUniKey:"+records[I].UniKey;
+                        var a='required'; if(records[I].Security_card_access=='0') a='not required';
+                        info+="\r\nSecurity card access:"+a;
+
+                        $vm.load_module_by_name(_app_id+'my_hr_approving',$vm.root_layout_content_slot,
+                            {
+                                title:title,pid:_db_pid,uid:records[I].UID,rid:records[I].ID,
+                                info:info,s3:records[I].Author,
+                                date:records[I].DateTime,
+                            }
+                        )
+                    });
+                    break;
+                case 'Approved_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approved_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by=='') return;
+                    td.html("<u style='cursor:pointer'>Approved Info</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name(_app_id+'my_hr_approved_info_s2',$vm.root_layout_content_slot,
+                            {rid:records[I].ID,pid_uid:_db_pid+'/'+records[I].UID}
+                        )
+                    });
+                    break;
+                case 'Group_Leader_for_Approval':
+                    var html="<select style='border:0;width:100%'></select>";
+                    records[I].vm_custom[field]=true;
+                    td.html(html)
+                    td.find('select').on('input', function(){
+                        set_value($(this).val(),records,I,field);
+                    });
+                    $vm.set_dropdown_list_from_text(td.find('select'),list_managers);
+                    td.find('select').val(records[I][field])
+                    break;
+                case 'Appointment':
+                     var html="<select style='border:0;'>\
+                             <option value=''>--</option>\
+                             <option>Employee</option>\
+                             <option>Affiliate</option>\
+                             <option>Honorary Affiliate</option>\
+                             <option>Clinician</option>\
+                         </select>\
+                     ";
+                     VmInclude:__BASE__/vmiis/Common-Code/grid/field_select.js
+                     break;
+                 case 'Type_of_Appointment':
+                      var html="<select style='border:0;'>\
+                              <option value=''>--</option>\
+                              <option>Ongoing appointment Full Time</option>\
+                              <option>Ongoing appointment Part Time</option>\
+                              <option>Fixed-term appointment Full Time</option>\
+                              <option>Fixed-term appointment Part Time</option>\
+                              <option>Casual appointment</option>\
+                              <option>Non-paid appointment</option>\
+                          </select>\
+                      ";
+                      VmInclude:__BASE__/vmiis/Common-Code/grid/field_select.js
+                      break;
+                 case 'Start_date':
+                      VmInclude:__BASE__/vmiis/Common-Code/grid/field_date.js
+                      break;
+            }
+        }
+        //-------------------------------------
+        _set_req=function(){
+            _req={cmd:'query_records_s3',db_pid:_db_pid,fields:'ID,UID,Information,DateTime,Author',
+            s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

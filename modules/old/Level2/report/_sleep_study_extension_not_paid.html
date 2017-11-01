@@ -1,0 +1,192 @@
+<section>
+    <div id=toolbar__ID>
+          <a id=back__ID>Back</a> <a id=new__ID>New</a> <a id=save__ID>Save</a>
+          <span class=tab__ID></span>
+          <input placeholder='name' id=keyword__ID type=text style='display:none' />
+		  <select id=age__ID><option>Adult</option><option>Child</option></select>
+          Year: <select id=yy__ID type=text />
+          Month: <select id=mm__ID type=text />
+          <a id=query__ID>Load</a>
+          <span id=multi__ID>
+              <span class=tab__ID></span>Page Size: <select id=page_size__ID><option>200</option><option>30</option><option>500</option><option>100</option></select><span class=tab__ID></span>
+              <span id=I__ID style="display:none">0</span><span id=A__ID></span>
+              <img id=p__ID src="__BASE__/vmiis/Common-Code/image/p.png" ><img id=n__ID src="__BASE__/vmiis/Common-Code/image/n.png" >
+          </span>
+          <span id=elapsed__ID style='float:right'></span>
+    </div>
+	<div id=table__ID>
+        <table id=grid__ID></table>
+    </div>
+</section>
+<script>
+function F__ID(){
+	//-------------------------------------
+	VmInclude:__BASE__/vmiis/Common-Code/grid/grid2.js
+	VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out_2.js
+    //-------------------------------------
+	//year dropdown
+	var $List1=$('#yy__ID');
+	var y=new Date().getFullYear();
+	for(var i=0;i<10;i++){
+		$List1.append(  $('<option></option>').val(y-i).html(y-i)  );
+	}
+	$List1.val(y);
+	//-------------------------------------
+	//month dropdown
+	var $List2=$('#mm__ID');
+	var m=new Date().getMonth();
+	for(var i=0;i<12;i++){
+		$List2.append(  $('<option></option>').val(i+1).html(i+1)  );
+	}
+	$List2.val(m);
+	//-------------------------------------
+	$('#new__ID').hide();
+	//-------------------------------------
+	var fields="Saved|PUID,Date of Study|I2_Date,Name & D.O.B|I2_Patient,Age,Type|I2_Study_Type,Item #|I2_Code,Colour_1,Cost,Reporting Dr|I2_Reporting_Physician,Reported|I2_Reported_text,Outcome,Submitted_on,Paid_on,Report_Comments";
+	fields+=",_Hidden|Colour_2,_Hidden|Colour_3";
+	_fields="_Form,"+fields;
+	//-------------------------------------
+	$('#D__ID').on('load',function(){  _set_req(); _request_data(); })
+	//-------------------------------------
+	_set_req=function(){
+        var y=$('#yy__ID').val(), m=$('#mm__ID').val();
+        var t1=new Date(2017,5,1,0,0,0,0);
+		var t2=new Date(y,m,  1,0,0,0,0);
+        //t2.setDate(t2.getDate()-7);
+
+		var code=" and (@('Code')=12203 or @('Code')=12210 or @('Code')=12217 or @('Code')=12213 or @('Code')=11003 or @('Code')=12250)";
+		var age0=" and case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 20 end";
+		var age=" age >17";
+		if( $('#age__ID').val()=='Child') age=" age <=17";
+		var other=" and @('Study_Type') NOT LIKE '%Self funded%' and @('Report_Not_Required')<>'on' and @('Cancelled')<>'on' and @('Arrival_Status')<>'Did Not Arrive' ";
+
+
+        var sql0="SET DATEFORMAT dmy; ";
+        sql0+="with tb1 as (select B1=CASE WHEN @('Outcome')='Paid' THEN 'True' ELSE 'False' END,B2,ID,Information,PUID,DateTime,Author from [TABLE-20010715-@S1]  )"
+        sql0+=",tb2 as (select DT1,Information2=Information,Age=case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 999 end ,UID from [TABLE-400448-@S1] where DT1>@T1 and DT1<@T2"+code+other+")";
+        sql0+=",tb3 as (select ID,Author,DT1,Information,Information2,Age,PUID,UID,DateTime,RowNum=row_number() over (order by DT1,UID DESC) from tb2 left join tb1 on PUID=UID where "+age+" and B1='False' and B2='False' )";
+        //sql0+=",tb4 as (select DT1,Information2,Age,UID,RowNum=row_number() over (order by DT1,UID DESC) from tb2 where "+age+")";
+		var sql=sql0+" select ID,UID,PUID,Information,Information2,Age,DateTime,Author from tb3 where RowNum between @I6 and @I7";
+		var sql_n=sql0+"select count(*) from tb3";
+		_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',s2:$('#age__ID').val(),t1:t1,t2:t2,I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+	}
+	//-------------------------------------
+	_cell_render=function(records,I,field,td,set_value,source){
+		switch(field){
+            case 'PUID':
+				if(records[I][field]==undefined || records[I][field]=='') {
+                    records[I][field]='#EE0000';
+                }
+                else records[I][field]='#00EE00';
+				VmInclude:__BASE__/vmiis/Common-Code/grid/field_color.js
+				break;
+			case 'I2_Date':
+			case 'I2_Patient':
+            case 'I2_Code':
+			case 'I2_Reporting_Physician':
+            case 'I2_Reported_text':
+            case 'Age':
+                if(records[I][field]=='999') td.text('');
+				records[I].vm_readonly[field]=true;
+				break;
+			case 'Colour_1':
+			case 'Colour_2':
+			case 'Colour_3':
+				if(records[I][field]==undefined) records[I][field]='#eeeeee';
+				VmInclude:__BASE__/vmiis/Common-Code/grid/field_color.js
+				break;
+            case 'I2_Study_Type':
+    				records[I].vm_readonly[field]=true;
+                    if(records[I][field]=='CPAP Titration PSG MC') {records[I].Colour_1='#FFFF21';}
+                    else if(records[I][field]=='CPAP Review PSG MC') {records[I].Colour_1='#FFFF21';}
+                    else if(records[I][field]=='Prolonged EEG MSLT') {records[I].Colour_1='#0094FF';}
+                    else if(records[I][field]=='Portable PSG MC') {records[I].Colour_1='#7C787C';}
+                    else if(records[I][field]=='12-18 years Diagnostic PSG MC') {records[I].Colour_1='#B200FF';}
+    				break;
+			case 'Cost':
+				td.on('click',function(){
+					if($(this).text()==''){
+                        var a=records[I].I2_Study_Type;
+						$VmAPI.request({data:{cmd:'query_records',sql:'select V2 from [TABLE-20010718] where S1=@S1',s1:a},callback:function(res){
+							if(res.records.length==1){
+								//records[I].Cost=res.records[0].V2;
+								_set_value(res.records[0].V2,_records,I,field);
+								td.text(parseFloat(res.records[0].V2).toFixed(2))
+							}
+						}});
+					}
+				})
+				break;
+			case 'Outcome':
+				var html="<select style='border:0;'>\
+					<option value='' >...</option>\
+					<option >Submitted</option>\
+                    <option >Paid</option>\
+                    <option >Written off</option>\
+					</select>\
+				";
+                records[I].vm_custom[field]=true;
+                td.html(html)
+                td.find('select').val(records[I][field])
+                td.find('select').on('change', function(){
+                    set_value($(this).val(),records,I,field);
+/*                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1; //January is 0!
+                    var yyyy = today.getFullYear();
+                    if(dd<10){dd='0'+dd;}
+                    if(mm<10){mm='0'+mm;}
+                    today = dd+'/'+mm+'/'+yyyy;
+                    if($(this).val()=='Paid') {
+                        set_value(today,records,I,'Paid_on');
+                    }
+                    if($(this).val()=='Submitted') {
+                        set_value(today,records,I,'Submitted_on');
+                    }*/
+                    //_render(I);
+                });
+
+				break;
+            case 'Submitted_on':
+            case 'Paid_on':
+                VmInclude:__BASE__/vmiis/Common-Code/grid/field_date.js
+				break;
+		}
+	}
+
+    //-------------------------------------
+    _after_change=function(records,I,field,td,set_value,source){
+        switch(field){
+                  case 'aaa':
+                      _render(I);
+                      break;
+              }
+    }
+    //-------------------------------------
+
+
+	//-------------------------------------
+	_before_submit=function(record,dbv){
+		dbv.PUID=record.UID;
+        if(record.Outcome=='Paid') dbv.B1='1'; else dbv.B1='0';
+        if(record.Outcome=='Written off')  dbv.B2='1'; else dbv.B2='0';
+		return true;
+	};
+	//-------------------------------------
+	setInterval(function (){
+		var display=$('#D__ID').css('display');
+		if(display=='block'){
+			var color=$('#save__ID').css('background');
+			var i=color.indexOf('rgb(238, 0, 0)')
+			if(i!=-1){
+				$('#save__ID').triggerHandler('click');
+			}
+		}
+	}, 300000);
+	//-------------------------------------
+}
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out_2.css
+</style>

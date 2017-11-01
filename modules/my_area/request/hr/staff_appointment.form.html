@@ -1,0 +1,282 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/back_save.html
+    <form id=F__ID>
+        <table id=tb__ID style='width:900px;'>
+            <colgroup>
+                <col style='width:300px' />
+                <col />
+            </colgroup>
+            <tr><td colspan=2 class='header__ID'>New Appointment Form</td></tr>
+            <tr><td colspan=2>
+                The information collected on this form is required to assist your new employee, Affiliate, Honorary Affiliate, Student, Clinician or Volunteer to quickly contribute to the Woolcock and to add their details to various lists (phone, security access card), website (intranet, Woolcock website), as well as arranging Laboratory & computer access (server, email) where applicable.
+                <br><br>To assist with this process, please complete the form <b>AS SOON AS POSSIBLE PRIOR TO THE START DATE</b> (minimum 1 week)
+                <br><br>
+            </td></tr>
+            <tr><td>Please select a staff</td><td data-id=Name>
+            <tr><td>Please indicate the category of appointment</td><td data-id=Appointment data-custom=1>
+                <select>
+                    <option>--</option>
+                    <option>Employee</option>
+                    <option>Affiliate</option>
+                    <option>Honorary Affiliate</option>
+                    <option>Clinician</option>
+                    <option>Volunteer</option>
+                </select>
+            </td></tr>
+            <tr><td>Select Group Leader for Approval</td><td data-id=Group_Leader_for_Approval></td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section A:  APPOINTEE DETAILS  </td></tr>
+            <tr><td>Appointee</td><td data-id=Appointee data-custom=1>
+                    <input type='radio'  name=Appointee__ID value=New id=Appointee_new ><label for=Appointee_new >&nbsp;New appointee</label>&nbsp;&nbsp;
+                    <input type='radio'  name=Appointee__ID value=Existing id=Appointee_existing ><label for=Appointee_existing >&nbsp;Existing appointee</label>
+            </td></tr>
+            <tr><td>Is the appointee from overseas? </td><td data-id=Overseas data-custom=1><input type=checkbox id=overseas /><label for=overseas >&nbsp;Yes</label></td></tr>
+            <tr class=visa_section__ID><td>Visa Type (if known)</td><td data-id=Visa_type></td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section B:  APPOINTMENT DETAILS</td></tr>
+            <tr class=hide_when_student><td>Position title</td><td data-id='Position_title'></td></tr>
+            <tr class=hide_when_student><td>Reporting to</td><td data-id=Reporting_to></td></tr>
+            <tr class=hide_when_student><td>Role</td><td data-id=Role data-custom=1>
+                    <input type='radio' name=Role__ID value=New id=role_new><label for=role_new >&nbsp;New role</label>&nbsp;&nbsp;
+                    <input type='radio' name=Role__ID value=Role id=role_exists><label for=role_exists >&nbsp;Role currently exists</label>
+            </td></tr>
+            <tr class=hide_when_student><td>Name of previous occupant</td><td data-id=Name_of_previous_occupant></td></tr>
+            <tr class=hide_when_student><td>Depart/Group</td><td data-id=Group></td></tr>
+            <tr class=hide_when_student><td>Project code(s)</td><td data-id=Project_code></td></tr>
+            <tr class=hide_when_student ><td>Type of Appointment</td><td data-id=Type_of_Appointment data-custom=1>
+                <select>
+                    <option>--</option>
+                    <option>Ongoing appointment Full Time</option>
+                    <option>Ongoing appointment Part Time</option>
+                    <option>Fixed-term appointment Full Time</option>
+                    <option>Fixed-term appointment Part Time</option>
+                    <option>Casual appointment</option>
+                    <option>Non-paid appointment</option>
+                </select>
+            </td></tr>
+            <tr class=parttime__ID><td>If appointment part-time,Number of hours per week</td><td data-id=Number_of_hours></td></tr>
+            <tr class=parttime__ID><td>Days of the week worked</td><td data-multi=1>
+                <input name=Days_of_the_week_worked_Monday data-id=Days_of_the_week_worked_Monday data-custom=1 type=checkbox id=work_monday /><label for=work_monday >&nbsp;Monday</label><br>
+                <input name=Days_of_the_week_worked_Tuesday data-id=Days_of_the_week_worked_Tuesday data-custom=1 type=checkbox id=work_tuesday /><label for=work_tuesday >&nbsp;Tuesday</label><br>
+                <input name=Days_of_the_week_worked_Wednesday data-id=Days_of_the_week_worked_Wednesday data-custom=1 type=checkbox id=work_wednesday /><label for=work_wednesday >&nbsp;Wednesday</label><br>
+                <input name=Days_of_the_week_worked_Thursday data-id=Days_of_the_week_worked_Thursday data-custom=1 type=checkbox id=work_thursday /><label for=work_thursday >&nbsp;Thursday</label><br>
+                <input name=Days_of_the_week_worked_Friday data-id=Days_of_the_week_worked_Friday data-custom=1 type=checkbox id=work_friday /><label for=work_friday >&nbsp;Friday</label><br>
+            </td></tr>
+            <tr class=not_casual__ID><td>Ongoing and fixed-term appointments.  Annual full-time base salary (excluding superannuation)</td><td><input name=Annual_Salary id=Annual_Salary type=text /></td></tr>
+            <tr class=casual__ID><td>Casual appointment hourly rate of pay (including 25% loading)</td><td><input name=Hourly_Rate id=Hourly_Rate type=text /></td></tr>
+            <tr><td>Start date</td><td data-id=Start_date data-custom=1><input type=text /></td></tr>
+            <tr class=fixed_term__ID><td>End date(if fixed term)</td><td data-id=End_date data-custom=1><input type=text /></td></tr>
+            <tr><td>In this role will the occupant be working directly with children or handling documentation relating to children?</td><td data-id=Children_Check data-custom=1>
+                <input type='radio'  name=Children_Check__ID value=1 id=Children_Check_1__ID><label for=Children_Check_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Children_Check__ID value=0 id=Children_Check_0__ID><label for=Children_Check_0__ID >&nbsp;No</label>
+            </td></tr>
+            <tr><td>Will this position be handling cash</td><td data-id=Police_Check data-custom=1>
+                <input type='radio'  name=Police_Check__ID value=1 id=Police_Check_1__ID><label for=Police_Check_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Police_Check__ID value=0 id=Police_Check_0__ID><label for=Police_Check_0__ID >&nbsp;No</label>
+            </td></tr>
+            <tr><td>New appointee's extension number</td><td><input name=Extension_Number id=Extension_Number type=text /></td></tr>
+            <tr><td>Workstation/ Office No</td><td><input name=Office_No id=Office_No type=text /></td></tr>
+        </table>
+    </form>
+</section>
+<script>
+    function F__ID(){
+        //----------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/form.js
+        //----------------------------------
+        $('#D__ID').on('load',function(){
+            _init();
+            _field_process();
+            custom_field_process();
+            check_overseas($('#tb__ID tbody td[data-id=Overseas]').find('input'))
+            set_type_of_appointment($('#tb__ID tbody td[data-id=Type_of_Appointment]').find('select'));
+
+            $('#save__ID').show();
+            if(_save_style=='none') $('#save__ID').hide();
+        })
+        //----------------------------------
+        var custom_field_process=function(){
+            $('#tb__ID tbody *[data-custom=1]').each(function(){
+                var field=$(this).attr('data-id');
+                switch(field){
+                    case 'Appointment':
+                        $(this).find('select').val(_records[I][field])
+                        $(this).find('select').on('input', function(){
+                            _set_value($(this).val(),_records,I,field);
+                        });
+                    break;
+                    case 'Children_Check':
+                    case 'Police_Check':
+                    case 'Computer':
+                    case 'Security_card':
+                    case 'Level_3_Access':
+                    case 'Vaccination':
+                    case 'Study_Participants':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                    break;
+                    case 'Overseas':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                            check_overseas($(this));
+                        });
+                    break;
+                    case 'Approved':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('span').text(_records[I][field+'_msg']);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                            if( $(this).prop('checked')===true){
+                                _records[I][field+'_by']=$vm.user;
+                                _records[I][field+'_date']=$vm.date_to_string_dmy($vm.date_today());
+                                _records[I][field+'_msg']='Approved by '+$vm.user+' on '+$vm.date_to_string_dmy($vm.date_today());
+                                $(this).parent().find('span').text(_records[I][field+'_msg']);
+                            }
+                        });
+                    break;
+
+                    case 'Type_of_Appointment':
+                        $(this).find('select').val(_records[I][field])
+                        $(this).find('select').on('input', function(){
+                            _set_value($(this).val(),_records,I,field);
+                            set_type_of_appointment($(this));
+                        });
+                    break;
+
+                    case 'Alert_Email':
+                        var sql="select top 1 List=@('List') from [TABLE-"+_module.list_managers_tid+"]";
+                        var $this=$(this);
+                        $VmAPI.request({data:{cmd:'query_records',sql:sql},callback:function(res){
+                            if(res.records.length>0){
+                                $vm.set_dropdown_list_from_text($this.find('select'),res.records[0].List);
+                                $this.find('select').val(_records[I].Alert_Email);
+                            }
+                        }});
+                        $(this).find('select').on('change',function(){
+                            _set_value($(this).val(),_records,I,field);
+                        })
+                    break;
+
+                    case "Gender":
+                    case "Appointee":
+                    case "Role":
+                    case "Unikey":
+                    case "Student_Source":
+                    case "Study_Type":
+                    case "scholarship":
+                        $(this).find("input[name='"+field+"__ID'][value='"+_records[I][field]+"']").prop('checked', true);
+                        $(this).find("input[name='"+field+"__ID']").off('click').on('click',function(){
+                            _set_value(this.value,_records,I,field);
+                        })
+                    break;
+                    case "Visa_start_date":
+                    case "Visa_end_date":
+                    case "Start_date":
+                    case "End_date":
+                        _records[I].vm_custom[field]=true;
+                        $(this).html('<input style="border:0; width:80px" />')
+                        $(this).find('input').val(_records[I][field])
+                        $(this).find('input').datepicker({dateFormat:'dd/mm/yy',changeMonth:true, changeYear:true,onClose:function(dateText) {
+                            _set_value(dateText,_records,I,field);
+                        }});
+                        break;
+                    case "Days_of_the_week_worked_Monday":
+                    case "Days_of_the_week_worked_Tuesday":
+                    case "Days_of_the_week_worked_Wednesday":
+                    case "Days_of_the_week_worked_Thursday":
+                    case "Days_of_the_week_worked_Friday":
+                    case "HR_Confirm":
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).prop('checked', true);
+                        $(this).on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                        break;
+                    case "HR_Send_Alerts":
+                        _records[I][field]='0';
+                        $(this).prop('checked', false);
+                        $(this).on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                        break;
+                }
+            })
+        }
+        //----------------------------------
+        var check_overseas=function($this){
+            if( $this.prop('checked')===true) $('.visa_section__ID').css('display','table-row');
+            else $('.visa_section__ID').css('display','none');
+        }
+    	//---------------------------------------------
+        var set_type_of_appointment=function($this){
+    		$('.parttime__ID').css('display','none');
+    		$('.casual__ID').css('display','none');
+    		$('.not_casual__ID').css('display','none');
+    		$('.fixed_term__ID').css('display','none');
+
+            if( $this.val()=='Ongoing appointment Part Time' || $this.val()=='Fixed-term appointment Part Time'){
+    			$('.parttime__ID').css('display','table-row');
+            }
+            if( $this.val()=='Casual appointment'){
+    			//$('.casual__ID').css('display','table-row');
+        		$('.casual__ID').css('display','none');
+            }
+            if( $this.val()=='Fixed-term appointment Full Time' || $this.val()=='Fixed-term appointment Part Time'){
+    			$('.fixed_term__ID').css('display','table-row');
+            }
+           	if($this.val()=='Fixed-term appointment Full Time' ||
+           			$this.val()=='Fixed-term appointment Part Time' ||
+           			$this.val()=='Ongoing appointment Full Time' ||
+           			$this.val()=='Ongoing appointment Part Time')
+           	{
+    			//$('.not_casual__ID').css('display','table-row');
+    			$('.not_casual__ID').css('display','none');
+            }
+    	};
+    	//---------------------------------------------
+        _before_submit_form=function(){
+            return true;
+        }
+        //----------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/toolbar.css
+    VmInclude:__BASE__/vmiis/Common-Code/grid/form.css
+    #F__ID input[type="radio"]
+    {vertical-align: middle;
+    margin: 0 0 0 4px;
+     }
+    #F__ID input[type="checkbox"]
+     {vertical-align: middle;
+    }
+    #F__ID  label {
+        /*font-size: 10pt;*/
+        font-style: italic;
+    }
+    #save_Send_email__ID,#save_Send_email_2__ID,#save_Send_operation_email__ID{
+        background-color:#697b7b;
+        border:0px solid #18ab29;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font: 9pt/30px Arial;
+        padding-left:15px;
+        padding-right:15px;
+        text-decoration:none;
+        text-shadow:1px 1px 0px #2f6627;
+        -moz-border-radius:8px;
+        -webkit-border-radius:8px;
+        border-radius:8px;
+        transition: all 0.2s ease-in-out;
+    }
+    #save_Send_email__ID:hover {
+    	    background-color:#525959;
+    }
+
+</style>

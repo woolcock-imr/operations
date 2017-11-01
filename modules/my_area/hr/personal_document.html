@@ -1,0 +1,47 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid_without_export.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        _record_type='s2';
+        //-------------------------------------
+        _fields="_Form,Document,Last Modified|lastModified,Size,Description";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            _op=$vm.vm['__ID'].op;
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Document':
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_file_with_size.js
+                break;
+                case 'Size':
+                    records[I].vm_custom[field]=true;
+                break;
+                case 'lastModified':
+                    records[I].vm_custom[field]=true;
+                break;
+            }
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.PPID=_op.staff_pid;
+            dbv.PUID=_op.staff_uid;
+            return true;
+        };
+        //-------------------------------------
+        _set_req=function(){
+            _req={cmd:'query_records_s2',db_pid:_db_pid,fields:'ID,Information,DateTime,Author',s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

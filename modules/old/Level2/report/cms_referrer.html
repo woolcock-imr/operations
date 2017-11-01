@@ -1,0 +1,61 @@
+<section>
+      VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="Provider_Number,Type,Organisation,Credentials,Title,Givennames,Surname,Street_Address,Suburb,State,Postcode,Phone_Home,Phone_Work,Mobile,E_mail,Fax";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+            }
+            //-------------------------------------
+        }
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data();  })
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            return true;
+        };
+        //-------------------------------------
+        _data_process=function(records){
+        };
+        //-------------------------------------
+        _new_pre_data_process=function(){
+        }
+        //-------------------------------------
+        /*
+        _after_submit=function(I,res,type,dbv){
+            if(type=='add'){
+                $vm.vm['__ID'].op.sql_where=" ID="+res.ret;
+            }
+        }
+        */
+        //-------------------------------------
+        _set_req=function(){
+            //-------------------
+            $('#new__ID').hide(); //always hide
+            $('#save__ID').hide(); //always hide
+            //-------------------
+            var sql="with tb as (select Information,ID,UID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] )";
+            sql+="select Information,ID,UID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
+            var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1]";
+            //-------------------
+            if($vm.vm['__ID'].op.sql_where!==undefined){
+                var sql_where=$vm.vm['__ID'].op.sql_where;
+                sql=sql.replace('RowNum between @I6 and @I7',sql_where);
+                sql_n+=" where "+sql_where;
+            }
+            //-------------------
+            _req={cmd:'query_records',sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

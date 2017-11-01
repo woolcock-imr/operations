@@ -7,12 +7,12 @@
         VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
         VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
         //-------------------------------------
-        _fields="_Form,Short Title,Information,Document";
+        _fields="_Form,Project Short Name,Catchy Title,Brief description of project (50 words)|Breif_Description,Individual study page with more details of project and how to get involved|Individual_page,Chief Investigator,Contact name,Contact details (email or phone number)|Contact_details,Details of ethics approvals|Ethics,Image,Instruction for answering questionnaires|Questionnaire_instruction";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-                case 'Document':
+                case 'Image':
                     VmInclude:__BASE__/vmiis/Common-Code/grid/field_file.js
                 break;
             }

@@ -1,0 +1,39 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.2.js
+        //-------------------------------------
+        var fields="Month,Year,Reporting_Date";
+        _fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        $('#title__ID').html("<i>Management of Sleep Studies - Monthly</i> &bull; <b>Set-up Reporting Dates</b>");
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data(); })
+        //-------------------------------------
+    	_cell_render=function(records,I,field,td,set_value,source){
+    		switch(field){
+                case 'Reporting_Date':
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_date.js
+    				break;
+    		}
+    	}
+        //-------------------------------------
+    	_before_submit=function(record,dbv){
+    		dbv.PUID=record.UID;
+            if(record.Reporting_Date!=='') dbv.DT1=record.Reporting_Date;
+            if(record.Year!=='')  dbv.V1=record.Year
+            if(record.Month!=='')  dbv.V2=record.Month
+    		return true;
+    	};
+        //-------------------------------------
+}
+
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.2.css
+</style>

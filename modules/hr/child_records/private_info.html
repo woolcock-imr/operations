@@ -1,0 +1,67 @@
+<section>
+    <div id=toolbar__ID>
+          <a id=back__ID>Back</a> <a id=save__ID>Save</a> <span class=tab__ID></span><span id=name__ID></span>
+          <a id=new__ID style='display:none'></a>
+    </div>
+    <table id=grid__ID></table>
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form,Address,Suburb,Postcode,State,Mobile_Phone";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        var staff_pid='',staff_uid='',staff_login_name='';
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            staff_pid=$vm.vm['__ID'].op.staff_pid;
+            staff_uid=$vm.vm['__ID'].op.staff_uid;
+            staff_login_name=$vm.vm['__ID'].op.staff_login_name;
+            var staff_name=$vm.vm['__ID'].op.staff_name;
+            $('#name__ID').text(staff_name);
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Suburb':
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_suburb.js
+                break;
+                case 'Postcode':
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_postcode.js
+                break;
+            }
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.PPID=staff_pid;
+            dbv.PUID=staff_uid;
+            dbv.S2=staff_login_name;
+            return true;
+        };
+        //-------------------------------------
+         _after_submit=function(){
+             //$('#back__ID').trigger('click');
+         }
+        //-------------------------------------
+        _data_process_after_render=function(){
+            if(_records.length===0){
+                $('#new__ID').triggerHandler('click');
+            }
+        }
+        //-------------------------------------
+        _set_req=function(){
+            var where=$vm.vm['__ID'].op.sql_where;
+            var sql="with tb as (select S1,Information,PID,ID,UID,PUID,DateTime,Author,Modified from [TABLE-"+_db_pid+"] where "+where+")";
+            sql+="select S1,Information,PID,ID,UID,PUID,DateTime,Author,Modified from tb";
+            _req={cmd:'query_records',sql:sql}
+       }
+       //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

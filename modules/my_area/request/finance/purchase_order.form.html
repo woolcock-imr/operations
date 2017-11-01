@@ -1,0 +1,164 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/back_save.html
+    <form id=F__ID>
+        <table id=tb__ID style='width:100%;'>
+            <colgroup>
+                <col style='width:300px' />
+                <col />
+            </colgroup>
+            <tr><td colspan=2 class='header__ID'>Purchase Order Form</td></tr>
+            <tr><td>Short_Description</td><td data-id=Short_Description></td></tr>
+            <tr><td>Select Group Leader for Approval</td><td data-id=Group_Leader_for_Approval></td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section A:  Supplier Details</td></tr>
+            <tr><td>Account No (if applicable)</td><td data-id='Supplier_Account_No'></td></tr>
+            <tr><td>Supplier Name</td><td data-id='Supplier_Name'></td></tr>
+            <tr><td>Supplier Address</td><td data-id='Supplier_Address'></td></tr>
+            <tr><td>Supplier Phone</td><td data-id='Supplier_Phone'></td></tr>
+            <tr><td>Supplier Fax</td><td data-id='Supplier_Fax'></td></tr>
+
+            <tr><td colspan=2 class='subheader__ID'>Section B:  Items</td></tr>
+            <tr><td colspan=2>
+                <u style='cursor:pointer' id=add_an_item__ID>Add an item</u>
+                <table id=grid_item_a__ID></table>
+                <table style='width:300px;float:right;border-collapse: collapse;'>
+                    <colgroup><col style='width:180px' /><col /></colgroup>
+
+                    <tr><td>Delivery</td><td data-id='Delivery'></td></tr>
+                    <tr><td>GST Amount</td><td data-id='GST_Amount'></td></tr>
+                    <tr><td>Total Amount</td><td data-id='Total_Amount'></td></tr>
+                </table>
+            </td></tr>
+        </table>
+    </form>
+</section>
+<script>
+    function F__ID(){
+        //----------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/form.js
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid_item_a.js
+        //----------------------------------
+        $('#D__ID').on('load',function(){
+            _init();
+            _field_process();
+            custom_field_process();
+            $('#save__ID').show();
+            if(_save_style=='none') $('#save__ID').hide();
+
+            //-------item part
+            _item_a_ppid=_db_pid;
+            _item_a_puid=''; if(_records[I].UID!=undefined) _item_a_puid=_records[I].UID;
+            _item_a_set_req(); _item_a_request_data();
+            //-------
+        })
+        //----------------------------------
+        var custom_field_process=function(){
+        }
+        //----------------------------------
+        _before_submit_form=function(record,dbv){
+            var info='';
+            for(var i=0;i<_item_a_records.length;i++){
+                info+=make_approved_info(_item_a_records[i])+"\r\n\r\n";
+            }
+            record.Details=info;
+            return true;
+        }
+        //----------------------------------
+        _after_submit_form=function(I,res,n,dbv){
+            _item_a_ppid=res.pid; _item_a_puid=res.uid;
+            _item_a_save(_item_a_db_pid,_item_a_ppid,_item_a_puid);
+        }
+        //----------------------------------
+        _after_change_form=function(records,I,field,td,set_value,source){
+            switch(field){
+                case "Delivery":
+                    cal();
+                    break;
+            }
+        }
+        //----------------------------------
+
+        //----------------------------------
+        //item part
+        var _item_a_db_pid='20009597';
+        _item_a_fields="Item No,Description,Quantity,Unit_Price,Amount,Project_Code,Name of person ordering,_Remove";
+        //----------------------------------
+        $('#add_an_item__ID').on('click',function(){ _item_a_add(); })
+        //----------------------------------
+        _item_a_cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case "Amount":
+                    records[I].vm_readonly[field]=true;
+                    break;
+            }
+        }
+        //----------------------------------
+        _item_a_after_change=function(records,I,field,td,set_value,source){
+            switch(field){
+                case "Quantity":
+                case "Unit_Price":
+                    cal();
+                    break;
+            }
+        }
+        //----------------------------------
+        _item_a_after_remove=function(){
+            cal();
+        }
+        //----------------------------------
+        _item_a_set_req=function(){
+            _item_a_req={cmd:'query_records_s2',db_pid:_item_a_db_pid,fields:'ID,UID,Information',
+                where:'ppid='+_item_a_ppid+' and puid='+_item_a_puid
+            }
+            if(_item_a_puid=='') _item_a_req=''
+        }
+        //-------------------------------------
+        _item_a_before_submit=function(record,dbv){
+            return true;
+        }
+        //----------------------------------
+        var cal=function(){
+            var total=0;
+            for(var i=0;i<_item_a_records.length;i++){
+                var p=parseFloat(_item_a_records[i].Unit_Price);
+                var q=parseFloat(_item_a_records[i].Quantity);
+                if(_item_a_records[i].Unit_Price=='') p=0;
+                if(_item_a_records[i].Quantity=='') q=0;
+                var a=p*q;
+                _item_a_records[i].Amount=a.toFixed(2);
+                total+=a;
+            }
+            var d=parseFloat(_records[I].Delivery);
+            if(_records[I].Delivery=='') d=0;
+            total+=d;
+            var gst=total*0.1;
+            _records[I].GST_Amount=gst.toFixed(2);
+            _records[I].Total_Amount=total.toFixed(2);
+            _field_process();
+            _item_a_render();
+        }
+        //----------------------------------
+        var make_approved_info=function(record){
+            var info='';
+            var items=_item_a_fields.split(',');
+            for(var i=0;i<items.length;i++){
+                var d=items[i].split('|');
+                var n=d[0];
+                if(d.length==3 || (d.length==2 && n[0]=='_') ) n=d[1];
+                var p=d.pop();
+                var v=record[p];
+                if(v!=undefined && v!=''){
+                    if(p!=='DateTime' && p!=='Author'){
+                        info+=n.replace(/_/g,' ')+": "+v+"\r\n";
+                    }
+                }
+            }
+            return info;
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/toolbar.css
+    VmInclude:__BASE__/vmiis/Common-Code/grid/form.css
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid_item_a.css
+</style>

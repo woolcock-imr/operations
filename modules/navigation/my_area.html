@@ -1,0 +1,149 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span><span id=nav_link__ID></span>
+    </div>
+    <div style='clear:left;'>
+        <div class='nav__ID'>
+            <span>My personal information</span>
+            <ul>
+                <li data-name=my_public_info>Public information</li>
+                <li data-name=my_private_info data-s=1>Private information</li>
+                <li data-name=my_personal_document data-s=1>Personal documents</li>
+                <li data-name=my_emergency_contact data-s=1>Emergency contact</li>
+            </ul>
+            <br>
+            <span>Requests</span>
+            <div style='padding-left:20px'>
+                <span>HR</span>
+                <ul>
+                    <li data-name=my_staff_appointment_request>Staff appointment requests</li>
+                    <li data-name=my_student_appointment_request>Student appointment requests</li>
+                    <li data-name=my_computer_and_access_request>Computer and access card requests</li>
+                    <li data-name=my_lab_access_request>Laborytory access and working with biological samples or in clinic requests</li>
+                </ul>
+                <span>Finance</span>
+                <ul>
+                    <li data-name=my_purchase_order_request>Purchase order requests</li>
+                    <!--<li data-name=_my_staff_appointment_request>Reimbursement</li>-->
+                </ul>
+                <br>
+            </div>
+            <span>Approval</span>
+            <div style='padding-left:20px'>
+                <span>HR</span>
+                <ul>
+                    <li data-name=my_staff_appointment_approval>Staff appointment requests</li>
+                    <li data-name=my_student_appointment_approval>Student appointment requests</li>
+                    <li data-name=my_computer_and_access_approval>Computer and access card requests</li>
+                    <li data-name=my_lab_access_approval>Laborytory access and working with biological samples or in clinic requests</li>
+                </ul>
+                <span>Finance</span>
+                <ul>
+                    <li data-name=my_purchase_order_approval>Purchase order requests</li>
+                </ul>
+                <br>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    //---------------------------------------------
+    function F__ID(){
+        //---------------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //---------------------------------------------
+        var _op,_module=$vm.module_list[$vm.vm['__ID'].name],_app_id=_module.var.app_id;
+        //---------------------------------------------
+        var _module_list=function(){
+            var L=$vm.module_list,A=_app_id,B=$vm.hosting_path+'/woolcock-imr/operation';
+            var v={
+                app_id:_app_id,
+            }
+            L[A+'my_public_info']=                          {table_id:'20009572',var:v,url:B+'/modules/my_area/hr/public_info.html'};
+            L[A+'my_private_info']=                         {table_id:'20009581',var:v,url:B+'/modules/my_area/hr/private_info.html'};
+            L[A+'my_personal_document']=                    {table_id:'20009582',var:v,url:B+'/modules/my_area/hr/personal_document.html'};
+            L[A+'my_emergency_contact']=                    {table_id:'20009583',var:v,url:B+'/modules/my_area/hr/emergency_contact.html'};
+
+
+            //hr request
+            L[A+'my_staff_appointment_request']=            {table_id:'20009574',var:v,url:B+'/modules/my_area/request/hr/staff_appointment.html',form_module:A+'my_staff_appointment_request_form'};
+            L[A+'my_staff_appointment_request_form']=       {table_id:'20009574',var:v,url:B+'/modules/my_area/request/hr/staff_appointment.form.html'};
+            L[A+'my_staff_appointment_email_to_manager']=   {table_id:'--------',var:v,url:B+'/modules/my_area/request/hr/staff_appointment_email_to_manager.html'};
+
+            L[A+'my_student_appointment_request']=          {table_id:'20009593',var:v,url:B+'/modules/my_area/request/hr/student_appointment.html',form_module:A+'my_student_appointment_request_form'};
+            L[A+'my_student_appointment_request_form']=     {table_id:'20009593',var:v,url:B+'/modules/my_area/request/hr/student_appointment.form.html'};
+            L[A+'my_student_appointment_email_to_manager']= {table_id:'--------',var:v,url:B+'/modules/my_area/request/hr/student_appointment_email_to_manager.html'};
+
+            L[A+'my_computer_and_access_request']=          {table_id:'20009576',var:v,url:B+'/modules/my_area/request/hr/computer_and_access.html'};
+            L[A+'my_computer_and_access_email_to_manager']= {table_id:'--------',var:v,url:B+'/modules/my_area/request/hr/computer_and_access_email_to_manager.html'};
+
+            L[A+'my_lab_access_request']=                   {table_id:'20009577',var:v,url:B+'/modules/my_area/request/hr/lab_access.html'};
+            L[A+'my_lab_access_email_to_manager']=          {table_id:'--------',var:v,url:B+'/modules/my_area/request/hr/lab_access_email_to_manager.html'};
+
+            //finance request
+            L[A+'my_purchase_order_request']=               {table_id:'20009596',var:v,url:B+'/modules/my_area/request/finance/purchase_order.html',form_module:A+'my_purchase_order_request_form'};
+            L[A+'my_purchase_order_request_form']=          {table_id:'20009596',var:v,url:B+'/modules/my_area/request/finance/purchase_order.form.html'};
+            L[A+'my_purchase_order_email_to_manager']=      {table_id:'--------',var:v,url:B+'/modules/my_area/request/finance/purchase_order_email_to_manager.html'};
+
+            //hr approval
+            L[A+'my_staff_appointment_approval']=           {table_id:'20009574',var:v,url:B+'/modules/my_area/approval/hr/staff_appointment.html',form_module:A+'my_staff_appointment_approval_form'};
+            L[A+'my_staff_appointment_approval_form']=      {table_id:'20009574',var:v,url:B+'/modules/my_area/request/hr/staff_appointment.form.html'};
+
+            L[A+'my_student_appointment_approval']=         {table_id:'20009593',var:v,url:B+'/modules/my_area/approval/hr/student_appointment.html',form_module:A+'my_student_appointment_approval_form'};
+            L[A+'my_student_appointment_approval_form']=    {table_id:'20009593',var:v,url:B+'/modules/my_area/request/hr/student_appointment.form.html'};
+
+            L[A+'my_computer_and_access_approval']=         {table_id:'20009576',var:v,url:B+'/modules/my_area/approval/hr/computer_and_access.html'};
+            L[A+'my_lab_access_approval']=                  {table_id:'20009577',var:v,url:B+'/modules/my_area/approval/hr/lab_access.html'};
+
+
+            L[A+'my_hr_approving']=                         {table_id:'20009575',var:v,url:B+'/modules/my_area/approval/approving.html'};
+            L[A+'my_hr_approved_info_s3']=                  {table_id:'20009575',var:v,url:B+'/modules/my_area/approval/approved_info_s3.html'};
+            L[A+'my_hr_approved_info_s2']=                  {table_id:'20009575',var:v,url:B+'/modules/my_area/approval/approved_info_s2.html'};
+
+            //finance approval
+            L[A+'my_purchase_order_approval']=              {table_id:'20009596',var:v,url:B+'/modules/my_area/approval/finance/purchase_order.html',form_module:A+'my_purchase_order_approval_form'};
+            L[A+'my_purchase_order_approval_form']=         {table_id:'20009596',var:v,url:B+'/modules/my_area/request/finance/purchase_order.form.html'};
+            L[A+'my_finance_approving']=                    {table_id:'20009598',var:v,url:B+'/modules/my_area/approval/approving.html'};
+            L[A+'my_finance_approved_info_s3']=             {table_id:'20009598',var:v,url:B+'/modules/my_area/approval/approved_info_s3.html'};
+            L[A+'my_finance_approved_info_s2']=             {table_id:'20009598',var:v,url:B+'/modules/my_area/approval/approved_info_s2.html'};
+        }
+        _module_list();
+        //---------------------------------------------
+        var staff_name,staff_login_name,staff_pid,staff_uid;
+        jQuery.ajaxSetup({async:false});
+        var req={cmd:'query_records_s2',db_pid:'20009572',fields:'PID,UID,Information,DateTime,Author'}
+        $VmAPI.request({data:req,callback:function(res){
+            if(res.records.length>0){
+                name=res.records[0].First_Name+' '+res.records[0].Last_Name;
+                staff_login_name=res.records[0].Login_Name;
+                staff_pid=res.records[0].PID;
+                staff_uid=res.records[0].UID;
+            }
+        }});
+        jQuery.ajaxSetup({async:true});
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _nav_name='My Area';
+            _set_nav_link();
+        });
+        //---------------------------------------------
+        _special_click_process=function(li){
+            var record_name=$(li).attr('data-name');
+            $vm.load_module_by_name(_app_id+record_name,$vm.root_layout_content_slot,{
+                staff_name:staff_name,
+                staff_login_name:staff_login_name,
+                staff_pid:staff_pid,
+                staff_uid:staff_uid,
+                sql_where:" PPID="+staff_pid+" and PUID="+staff_uid,
+            });
+        }
+        //-------------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.css
+    #D__ID{
+        background: url("__BASE__/vmiis/common-code/image/texture.png");
+    }
+</style>

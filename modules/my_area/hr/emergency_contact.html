@@ -1,0 +1,48 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=new__ID style="display:none"/>
+        <a id=back__ID>Back</a> <a id=save__ID>Save & Back</a> <span class=tab__ID></span><span id=name__ID></span>
+    </div>
+    <table id=grid__ID></table>
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        _record_type='s2';
+        //-------------------------------------
+        _fields="_Form,Contact_Name,Relationship,Phone,Email";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            _op=$vm.vm['__ID'].op;
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+            }
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.PPID=_op.staff_pid;
+            dbv.PUID=_op.staff_uid;
+            return true;
+        };
+        //-------------------------------------
+        _set_req=function(){
+            _req={cmd:'query_records_s2',db_pid:_db_pid,fields:'ID,Information,DateTime,Author'}
+        }
+        //-------------------------------------
+        _data_process=function(){
+            if(_res.records.length==0){
+                $('#new__ID').triggerHandler('click');
+            }
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

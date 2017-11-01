@@ -1,0 +1,70 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form,Name,Confirmed_by,Approved_by,_Approved_Info";
+        _fields+=",_gridHidden|Does new appointee require access<br>to Laboratories on Level 3|Access_level_3";
+        _fields+=",_gridHidden|Will the new appointee come into<br>contact with patients or participants|Contact_patients_or_participants";
+        _fields+=",_gridHidden|Will the new appointee be involved<br>in research with study participants|Research_with_participants";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            _op=$vm.vm['__ID'].op;
+            $('#new__ID').hide();
+            $('#save__ID').hide();
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Name':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Approved_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approved_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by=='') return;
+                    td.html("<u style='cursor:pointer'>Approved Info</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name(_app_id+'approved_info_s3',$vm.root_layout_content_slot,
+                            {rid:records[I].ID,pid_uid:_db_pid+'/'+records[I].UID}
+                        )
+                    });
+                    break;
+                case 'Access_level_3':
+                case 'Contact_patients_or_participants':
+                case 'Research_with_participants':
+                    td.html('<input type=checkbox /> Yes');
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                    break;
+            }
+        }
+        //-------------------------------------
+        _set_req=function(){
+            var sql="\
+                with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] \
+                where PUID=@I1) \
+                select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7\
+            ";
+            var sql_n="\
+                select count(ID) from [TABLE-"+_db_pid+"-@S1] where PUID=@I1\
+            ";
+            _req={cmd:'query_records',sql:sql,sql_n:sql_n,i1:_op.staff_uid,
+            s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

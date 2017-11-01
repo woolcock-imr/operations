@@ -1,0 +1,211 @@
+<section>
+    <div id=toolbar__ID>
+          <a id=back__ID>Back</a>
+          <span class=tab__ID></span>
+          <input placeholder='name' id=keyword__ID type=text style='display:none' />
+		  <select id=age__ID><option>Adult</option><option>Child</option></select>
+          Year: <select id=yy__ID type=text />
+          Month: <select id=mm__ID type=text />
+          <a id=query__ID>Load</a>
+          <span id=multi__ID>
+              <span class=tab__ID></span>Page Size: <select id=page_size__ID><option>100</option><option>30</option><option>50</option><option>200</option></select><span class=tab__ID></span>
+              <span id=I__ID style="display:none">0</span><span id=A__ID></span>
+              <img id=p__ID src="__BASE__/vmiis/Common-Code/image/p.png" ><img id=n__ID src="__BASE__/vmiis/Common-Code/image/n.png" >
+          </span>
+          &nbsp;<a id=export__ID >Export</a><input id=start__ID type=text style="width:50px;display:none" />
+          <span id=title__ID></span>
+
+          <span id=elapsed__ID style='float:right'></span>
+    </div>
+	<div id=table__ID>
+        <table id=grid__ID></table>
+    </div>
+</section>
+<script>
+function F__ID(){
+	//-------------------------------------
+	VmInclude:__BASE__/vmiis/Common-Code/grid/grid2.js
+	VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out_2.js
+	//-------------------------------------
+	//year dropdown
+	var $List1=$('#yy__ID');
+	var y=new Date().getFullYear();
+	for(var i=0;i<10;i++){
+		$List1.append(  $('<option></option>').val(y-i).html(y-i)  );
+	}
+	$List1.val(y);
+	//-------------------------------------
+	//month dropdown
+	var $List2=$('#mm__ID');
+	var m=new Date().getMonth()+1;
+	for(var i=0;i<12;i++){
+		$List2.append(  $('<option></option>').val(i+1).html(i+1)  );
+	}
+	$List2.val(m);
+	//---------------------------------------------
+	$('#new__ID').hide();
+	//-------------------------------------
+	var fields="Date of Study|Date,Name & D.O.B|Patient,Age,Type|Study_Type,Item #|Code,_Hidden|Colour_1,Reporting Dr|Reporting_Physician,Inprogress,Scored,QAed_on,Reported|Reported_text,Need_QA,_Hidden|Reporting_Date,Study to QA (Days)|QA_Time,QA to Report (Days)|Report_Time,Study to Report (Days)|Process_Time";
+	fields+=",_Hidden|Colour_2,_Hidden|Colour_3";
+	_fields="_Form,"+fields;
+    //-------------------------------------
+    $('#title__ID').html("<i>Management of Sleep Studies - Monthly</i> &bull; <b>Scoring and Reporting Status</b>");
+	//-------------------------------------
+	$('#D__ID').on('load',function(){  _set_req(); _request_data(); })
+	//-------------------------------------
+    _set_req=function(){
+		var y=$('#yy__ID').val(), m=$('#mm__ID').val();
+        if(m==1) {y=y-1;m=12;}
+        var t1=new Date(y,m-1,1,0,0,0,0);
+		var t2=new Date(y,m,  1,0,0,0,0);
+
+		var code=" and (@('Code')=12203 or @('Code')=12210 or @('Code')=12217 or @('Code')=12213 or @('Code')=12250) ";
+		var age0=" and case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 20 end";
+		var age=" age >17";
+		if( $('#age__ID').val()=='Child') age=" age <=17";
+		var other="  and @('Report_Not_Required')<>'on' and @('Cancelled')<>'on' and @('Arrival_Status')<>'Did Not Arrive' ";
+
+        var sql0="SET DATEFORMAT dmy; ";
+        sql0+=" with tb2 as (select DT1,Information,Age=case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 999 end ,UID from [TABLE-400448-@S1] where DT1>=@T1 and DT1<@T2"+code+other+")";
+        sql0+=",tb3 as (select DT1,Information,Age,UID,RowNum=row_number() over (order by DT1,UID DESC) from tb2 where "+age+")";
+		var sql=sql0+" select UID,Information,Age from tb3 where RowNum between @I6 and @I7";
+		var sql_n=sql0+"select count(*) from tb3";
+		_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',s2:$('#age__ID').val(),t1:t1,t2:t2,I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+	}
+    //-------------------------------------
+    _set_req_export=function(i1,i2){
+		var y=$('#yy__ID').val(), m=$('#mm__ID').val();
+        if(m==1) {y=y-1;m=12;}
+        var t1=new Date(y,m-1,1,0,0,0,0);
+		var t2=new Date(y,m,  1,0,0,0,0);
+
+		var code=" and (@('Code')=12203 or @('Code')=12210 or @('Code')=12217 or @('Code')=12213 or @('Code')=12250)";
+		var age0=" and case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 20 end";
+		var age=" age >17";
+		if( $('#age__ID').val()=='Child') age=" age <=17";
+		var other="  and @('Report_Not_Required')<>'on' and @('Cancelled')<>'on' and @('Arrival_Status')<>'Did Not Arrive' ";
+
+        var sql0="SET DATEFORMAT dmy; ";
+        sql0+="with tb2 as (select DT1,Information,Age=case when isdate(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))))=1  then datediff(day,cast(LTRIM(SUBSTRING(S2,CHARINDEX(',',S2)+1,LEN(S2)-CHARINDEX(',',S2))) as DateTime),DT1)/365 else 999 end ,UID from [TABLE-400448-@S1] where DT1>=@T1 and DT1<@T2"+code+other+")";
+        sql0+=",tb3 as (select DT1,Information,Age,UID,RowNum=row_number() over (order by DT1,UID DESC) from tb2 where "+age+")";
+		var sql=sql0+" select UID,Information,Age from tb3 where RowNum between @I1 and @I2";
+		var sql_n=sql0+"select count(*) from tb3";
+		_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',s2:$('#age__ID').val(),t1:t1,t2:t2,I:$('#I__ID').text(),page_size:$('#page_size__ID').val(),i1:i1,i2:i2}
+	}
+	//-------------------------------------
+	_cell_render=function(records,I,field,td,set_value,source){
+		switch(field){
+            case 'PUID':
+				if(records[I][field]==undefined || records[I][field]=='') {
+                    records[I][field]='#EE0000';
+                }
+                else records[I][field]='#00EE00';
+				VmInclude:__BASE__/vmiis/Common-Code/grid/field_color.js
+				break;
+			case 'Date':
+			case 'Patient':
+            case 'Code':
+			case 'Reporting_Physician':
+            case 'Reported_text':
+            case 'Age':
+            case 'QAed_on':
+            case 'Scored':
+            case 'Inprogress':
+            case 'Need_QA':
+            case 'Report_Time':
+            case 'QA_Time':
+            case 'Process_Time':
+            case 'Study_Type':
+                if(records[I][field]=='999') td.text('');
+				records[I].vm_readonly[field]=true;
+				break;
+			case 'Colour_1':
+			case 'Colour_2':
+			case 'Colour_3':
+				if(records[I][field]==undefined) records[I][field]='#eeeeee';
+				VmInclude:__BASE__/vmiis/Common-Code/grid/field_color.js
+				break;
+		}
+	}
+    //-------------------------------------
+	_data_process=function(){
+        if(_records.length>0){
+    		for(var i=0;i<_records.length;i++){
+    			if(_records[i].status_audit!=undefined){
+                    var n=(_records[i].status_audit).indexOf("Quality")
+                    if(n>0){
+        		         _records[i].QAed_on=(_records[i].status_audit).substring(n+19,n+29)
+        			};
+                    n=(_records[i].status_audit).indexOf("Scored")
+                    if(n>0){
+        		         _records[i].Scored=(_records[i].status_audit).substring(n+10,n+20)
+        			};
+                    n=(_records[i].status_audit).indexOf("Inprogress ")
+                    if(n>0){
+        		         _records[i].Inprogress=(_records[i].status_audit).substring(n+14,n+24)
+        			};
+                }
+                var end;
+                var start;
+                var start_qa;
+                if(_records[i].Need_QA=="on") { _records[i].Need_QA="Yes";} //=='Yes'; else _records[i].Need_QA=='';
+                if(_records[i].Reporting_Date!='' && _records[i].Reporting_Date!=undefined){
+                    end = new Date((_records[i].Reporting_Date).substring(6,10)+'-'+(_records[i].Reporting_Date).substring(3,5)+'-'+(_records[i].Reporting_Date).substring(0,2));
+                }
+                else {
+                    end=undefined;
+                }
+                if(_records[i].QA_Date!='' && _records[i].QA_Date!=undefined){
+                    start_qa = new Date((_records[i].QA_Date).substring(6,10)+'-'+(_records[i].QA_Date).substring(3,5)+'-'+(_records[i].QA_Date).substring(0,2));
+                }
+                else {
+                    start_qa=undefined;
+                }
+                start = new Date((_records[i].Date).substring(6,10)+'-'+(_records[i].Date).substring(3,5)+'-'+(_records[i].Date).substring(0,2));
+                // end - start returns difference in milliseconds
+                var diff = new Date(end - start);
+                var days = diff/1000/60/60/24;
+                _records[i].Process_Time=days;
+                diff=new Date(end-start_qa);
+                days=diff/1000/60/60/24;
+                _records[i].Report_Time=days;
+                diff=new Date(start_qa-start);
+                days=diff/1000/60/60/24;
+                _records[i].QA_Time=days;
+                if(isNaN(_records[i].Report_Time)) _records[i].Report_Time='';
+                if(isNaN(_records[i].Process_Time)) _records[i].Process_Time='';
+                if(isNaN(_records[i].QA_Time)) _records[i].QA_Time='';
+
+
+    		}
+        }
+	}
+	//-------------------------------------
+	_before_submit=function(record,dbv){
+		dbv.PUID=record.UID;
+        if(record.Outcome=='Paid' && record.Paid_on=='') {$vm.alert("Please fill in Paid on for: "+record.Patient+". This entry is not saved before the change has been done.");return false;}
+        else{
+            if(record.Paid_on!=='') dbv.DT1=record.Paid_on;
+            if(record.Outcome=='Paid') dbv.B1='1'; else dbv.B1='0';
+            if(record.Outcome=='Written off')  dbv.B2='1'; else dbv.B2='0';
+		    return true;
+        }
+	};
+	//-------------------------------------
+	setInterval(function (){
+		var display=$('#D__ID').css('display');
+		if(display=='block'){
+			var color=$('#save__ID').css('background');
+			var i=color.indexOf('rgb(238, 0, 0)')
+			if(i!=-1){
+				$('#save__ID').triggerHandler('click');
+			}
+		}
+	}, 300000);
+	//-------------------------------------
+}
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out_2.css
+</style>

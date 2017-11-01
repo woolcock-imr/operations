@@ -1,0 +1,99 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/back_save.html
+    <form id=F__ID>
+        <table id=tb__ID style='width:900px;'>
+            <colgroup>
+                <col style='width:520px' />
+                <col />
+            </colgroup>
+
+            <tr><td colspan=2 class='header__ID'>Staff Departure Form</td></tr>
+            <tr><td colspan="2">
+                When an Employee, Affiliate, Honorary Affiliate, Student or Contractor leaves the Woolcock, they must return all security
+                swipe cards, keys and computers and other equipment where applicable. Departure Information is required to update
+                directory lists and to remove building and computer access where applicable.
+                <br><b>To assist with administration, please complete this form on the last working day and submit it
+                immediately for action by relevant departments. </b>
+            </td></tr>
+            <tr><td>First name:</td><td data-id=First_name></td></tr>
+            <tr><td>Surname:</td><td data-id=Surname></td></tr>
+            <tr><td>Position:</td><td data-id=Position></td></tr>
+            <tr><td>Dept/Group:</td><td data-id=Group></td></tr>
+            <tr><td>Reporting to:</td><td data-id=Reporting_to></td></tr>
+            <tr><td>Reason for leaving:</td><td data-id=Reason_for_leaving></td></tr>
+            <tr><td colspan="2">
+                <b>Office/Workstation space being vacated:</b>
+            </td></tr>
+            <tr><td>Room no.</td><td data-id=Room_no></td></tr>
+            <tr><td>Work station no.</td><td data-id=Work_station_no></td></tr>
+            <tr><td>Phone: 9114- </td><td data-id=Phone></td></tr>
+
+            <tr><td colspan="2">
+                <b>CHECK LIST FOR RETURNS </b>
+                <br>Please ensure the following items are returned to your possession:
+            </td></tr>
+            <tr><td>Security Swipe card</td><td data-id=Security_Swipe_card data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Cancellation of University card access</td><td data-id=Cancellation_of_University_card_access data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Key for office</td><td data-id=Key_for_office data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Key for Rooms (eg. Pharmacy, Stores, Clinical Rooms etc)</td><td data-id=Key_for_Rooms data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Please list rooms where keys have been retrieved</td><td data-id=Please_list_rooms_where_keys_have_been_retrieved></td></tr>
+            <tr><td>Key for under desk pedestal filing cabinet</td><td data-id=Key_for_under_desk_pedestal_filing_cabinet data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Key(s) for filing cabinets</td><td data-id=Keys_for_filing_cabinets data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Laptop</td><td data-id=Laptop data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Software</td><td data-id=Software data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Manuals</td><td data-id=Manuals data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Other?</td><td data-id=Other data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Other Details</td><td data-id=Other_Details></td></tr>
+            <tr><td>Have you ensured that you have access to the employee’s computer data and files?</td><td data-id=Have_you_ensured_that_you_have_access_to_the_employees_computer_data_and_files data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Have you checked that the voicemail security code is set to ’0000’?</td><td data-id=Have_you_checked_that_the_voicemail_security_code_is_set_to_0000 data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Have samples been identified?</td><td data-id=Have_samples_been_identified data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Have perishable items been dealt with? </td><td data-id=Have_perishable_items_been_dealt_with data-custom=1><input type=checkbox /></td></tr>
+            <tr><td>Comments:</td><td data-id=Comments:></td></tr>
+        </table>
+    </form>
+</section>
+<script>
+    function F__ID(){
+        //----------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/form.js
+        //----------------------------------
+        $('#D__ID').on('load',function(){
+            _init();
+            _field_process();
+            custom_field_process();
+        })
+        //----------------------------------
+        var custom_field_process=function(){
+            $('#tb__ID tbody td[data-custom=1]').each(function(){
+                var field=$(this).attr('data-id');
+                switch(field){
+                    case 'Security_Swipe_card':
+                    case 'Cancellation_of_University_card_access':
+                    case 'Key_for_office':
+                    case 'Key_for_Rooms':
+                    case 'Key_for_under_desk_pedestal_filing_cabinet':
+                    case 'Keys_for_filing_cabinets':
+                    case 'Laptop':
+                    case 'Software':
+                    case 'Manuals':
+                    case 'Other':
+                    case 'Have_you_ensured_that_you_have_access_to_the_employees_computer_data_and_files':
+                    case 'Have_you_checked_that_the_voicemail_security_code_is_set_to_0000':
+                    case 'Have_samples_been_identified':
+                    case 'Have_perishable_items_been_dealt_with':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                    break;
+                }
+            })
+        }
+        //----------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/toolbar.css
+    VmInclude:__BASE__/vmiis/Common-Code/grid/form.css
+</style>

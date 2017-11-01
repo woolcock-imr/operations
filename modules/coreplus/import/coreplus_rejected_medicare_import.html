@@ -1,0 +1,134 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid_import.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        if($vm.module_list['_system_import_dialog_module']===undefined) $vm.module_list['_system_import_dialog_module']={table_id:'',url:'__BASE__/vmiis/Common-Code/dialog/import_dialog_module.html'};
+        $vm.load_module_by_name('_system_import_dialog_module','',{})
+        //-------------------------------------
+        _fields="_Form,Claim_ID,Client_Name,Invoice_No,Submit_Response,Medicare_Response";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        var check_field='Claim_ID';
+        //-------------------------------------
+        $('#D__ID').on('load',function(){    _set_req(); _request_data(); })
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            dbv.S1=record.Claim_ID;
+    		dbv.S2=record.Invoice_No;
+    		dbv.S3=record.Client_Name;
+        };
+        //-------------------------------------
+        $('#import__ID').on('click',function(){
+            $('#fileform__ID')[0].reset();
+            $('#import_file__ID').trigger('click');
+        })
+        //-------------------------------------
+        $('#import_file__ID').on('change',function(evt){
+            var files = evt.target.files;
+            if(files.length>0){
+                if(confirm("Are you sure to import "+files[0].name+"?\n")){
+                    var reader = new FileReader();
+                    reader.onload = (function(e) {processing_file(e.target.result); });
+                    reader.readAsText(files[0]);
+                }
+            }
+        })
+        //-------------------------------------
+        var number_to_process,number_completed,loop_done,dialog_module_id;
+        //-------------------------------------
+        var processing_file=function(contents){
+            var lines=contents.replace(/\r/g,'\n').replace(/\n\n/g,'\n').split('\n');
+            if(lines.length>1){
+                number_to_process=0;
+                number_completed=0;
+                loop_done=0;
+                dialog_module_id=$vm.get_module_id({name:'_system_import_dialog_module'})
+                var tab='\t';
+                var n1=lines[0].split('\t').length;
+                var n2=lines[0].split(',').length;
+                if(n2>n1) tab=',';
+                var header=lines[0].splitCSV(tab);
+                for(var k=0;k<header.length;k++){
+                    header[k]=header[k].trim().replace(/ /g,'_');
+//special field
+if(header[k]=='Invoice_#') header[k]='Invoice_No';
+//
+                }
+                var flds=_fields.split(',');
+                var i=1;
+                $vm.open_dialog({name:'_system_import_dialog_module'});
+                (function looper(){
+                    if( i<lines.length ) {
+                        var items=lines[i].splitCSV(tab);
+                        if(items.length>=2 || (items.length==1 && items[0]!=='') ){
+                            var rd={};
+                            for(var j=0;j<flds.length;j++){
+                                var field_name=flds[j].split('|')[0];
+                                var field_id=flds[j].split('|').pop();
+                                var index=header.indexOf(field_name.replace(/ /g,'_'));
+                                if(index!=-1)  rd[field_id]=items[index];
+                            }
+                            if(jQuery.isEmptyObject(rd)===false){
+                                number_to_process++;
+                                if(_before_submit!==''){
+                                    _dbv={};
+                                    _before_submit(rd,_dbv);
+                                }
+                                //------------------------------------------
+                                //check
+                                var sql="select top 1 ID from [TABLE-"+_db_pid+"] where S1=@S1";
+                                var req={cmd:"query_records",sql:sql,s1:rd[check_field]};
+                                var rid=0;
+                                jQuery.ajaxSetup({async:false});
+                                $VmAPI.request({data:req,callback:function(res){
+                                    if(res.records.length==1) rid=res.records[0].ID;
+                                }})
+                                jQuery.ajaxSetup({async:true});
+                                if(rid==0){
+                                    //add
+                                    var req={cmd:"add_record",db_pid:_db_pid.toString(),data:rd,dbv:_dbv};
+                                    $VmAPI.request({data:req,callback:function(res){
+                                        number_completed++;
+                                        processing_file_end();
+                                    }})
+                                }
+                                else{
+                                    //modify
+                                    var req={cmd:"modify_record",db_pid:_db_pid.toString(),rid:rid,data:rd,dbv:_dbv};
+                                    $VmAPI.request({data:req,callback:function(res){
+                                        number_completed++;
+                                        processing_file_end();
+                                    }})
+                                }
+                                //------------------------------------------
+                            }
+                        }
+                        i++;
+                        setTimeout(looper, 500);
+                    }
+                    else{
+                        loop_done=1;
+                        processing_file_end();
+                    }
+                })();
+            }
+        }
+        //-------------------------------------
+        var processing_file_end=function(){
+            $('#import_num'+dialog_module_id).text(number_completed.toString());
+            if(loop_done==1 && number_to_process==number_completed){
+                number_to_process=-1;
+                $vm.close_dialog({name:'_system_import_dialog_module'});
+                alert(number_completed.toString()+" records have been imported.");
+                _set_req(); _request_data();
+            }
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

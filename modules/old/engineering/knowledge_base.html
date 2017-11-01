@@ -1,0 +1,41 @@
+<section>
+      VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+function F__ID(){
+	//-------------------------------------
+	VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+	VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+	//-------------------------------------
+	_fields="_Form,Short_Title,_gridHidden|Information,Document";
+	_fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+	//-------------------------------------
+	_cell_render=function(records,I,field,td,set_value,source){
+		switch(field){
+			case 'Short_Title':
+				if(records[I].UID==null || records[I].UID==undefined) return;
+				if(source=='form'){
+					records[I].vm_readonly[field]=false;
+					return;
+				}
+				records[I].vm_readonly[field]=true;
+				var nm=$('<div/>').html(records[I][field]).text();
+				td.html("<u style='cursor:pointer;'>"+nm+"</u>");
+				td.find('u').on('click',function(){
+					var form=td.parent().find('td').eq(1).find('u:first');
+                    form.triggerHandler('click');
+				})
+				break;
+		    case 'Document':
+		        VmInclude:__BASE__/vmiis/Common-Code/grid/field_file.js
+		    	break;
+		}
+	}
+	//-------------------------------------
+	$('#D__ID').on('load',function(){ _set_req(); _request_data(); })
+	//-------------------------------------
+}
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

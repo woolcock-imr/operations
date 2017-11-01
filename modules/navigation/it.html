@@ -1,0 +1,74 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span><span id=nav_link__ID></span>
+    </div>
+    <div style='clear:left;'>
+        <div class='nav__ID'>
+            <span>IP Address</span>
+            <ul>
+                <li data-name=dhcp>DHCP</li>
+                <li data-name=privat>Private</li>
+                <li data-name=public>Public</li>
+                <li data-name=vms>VMs</li>
+                <li data-name=nas>NAS Boxes</li>
+                <li data-name=followme>Follow Me</li>
+                <li data-name=oldprinters>Old Printers</li>
+            </ul>
+            <br>
+            <span>Unikey</span>
+            <ul>
+                <li data-name=unikey_staff>Staff</li>
+                <li data-name=unikey_role>Role</li>
+                <li data-name=unikey_vietnam>Vietnam</li>
+            </ul>
+            <br>
+        </div>
+    </div>
+</section>
+<script>
+    //---------------------------------------------
+    function F__ID(){
+        //---------------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //---------------------------------------------
+        _app_id='woolcock_operation_';
+        //---------------------------------------------
+        var _module_list=function(){
+            var L=$vm.module_list,A=_app_id,B=$vm.hosting_path+'/woolcock-imr/operation';
+            var H=$vm.hosting_path;
+            var V=$vm.hosting_path+'/woolcock-imr/volunteer-database';
+            var v={
+                app_id:_app_id,
+            }
+            L[A+'dhcp']=            {table_id:'20009632',var:v,url:B+'/modules/it/ip_address.html'};
+            L[A+'privat']=          {table_id:'20009633',var:v,url:B+'/modules/it/ip_address.html'};
+            L[A+'public']=          {table_id:'20009634',var:v,url:B+'/modules/it/ip_address.html'};
+            L[A+'vms']=             {table_id:'20009635',var:v,url:B+'/modules/it/ip_address.html'};
+            L[A+'nas']=             {table_id:'20009636',var:v,url:B+'/modules/it/ip_address.html'};
+            L[A+'followme']=        {table_id:'20009637',var:v,url:B+'/modules/it/ip_address.html'};
+            L[A+'oldprinters']=     {table_id:'20009638',var:v,url:B+'/modules/it/ip_address.html'};
+
+            L[A+'unikey_staff']=    {table_id:'20009639',var:v,url:B+'/modules/it/unikey_staff.html'};
+            L[A+'unikey_role']=     {table_id:'20009640',var:v,url:B+'/modules/it/unikey_role.html'};
+            L[A+'unikey_vietnam']=  {table_id:'20009641',var:v,url:B+'/modules/it/unikey_vietnam.html'};
+
+            L[A+'staff_public_info']=       {table_id:'20009572',var:v,url:B+'/modules/hr/child_records/public_info.html'};
+            L[A+'group']=                   {table_id:'20009573',var:v,url:B+'/modules/hr/administrator/department.html'};
+        }
+        _module_list();
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _nav_name='Human Resources';
+            _set_nav_link();
+            _set_permissions();
+        });
+        //---------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.css
+    #D__ID{
+        background: url("__BASE__/vmiis/common-code/image/texture.png");
+    }
+</style>

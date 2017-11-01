@@ -1,0 +1,90 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span><span id=nav_link__ID></span>
+    </div>
+    <div style='clear:left;'>
+        <div class='nav__ID'>
+            <span>Information</span>
+            <ul>
+                <li data-name=finance_public_documents>Finance public documents</li>
+            </ul>
+            <br>
+            <span>Request processing</span>
+            <ul>
+                <li data-name=all_purchase_order>Purchase order requests</li>
+            </ul>
+            <br>
+            <span>Administrator</span>
+            <ul>
+                <li data-name=managers>Department Leaders for Approval</li>
+                <li data-name=list_finance>Notification Email List - Finance</li>
+                <li data-name=finance_approvement_signature>Delete approvement signature</li>
+                <li data-name=finance_processing_signature>Delete processing signature</li>
+            </ul>
+            <br>
+            <span>Help</span>
+            <ul>
+                <li data-name=wiki>Help</li>
+            </ul>
+            <br>
+        </div>
+    </div>
+</section>
+<script>
+    //---------------------------------------------
+    function F__ID(){
+        //---------------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //---------------------------------------------
+        _app_id='woolcock_operation_';
+        //---------------------------------------------
+        var _module_list=function(){
+            var L=$vm.module_list,A=_app_id,B=$vm.hosting_path+'/woolcock-imr/operation';
+            var H=$vm.hosting_path;
+            var V=$vm.hosting_path+'/woolcock-imr/volunteer-database';
+            var v={
+                app_id:_app_id,
+            }
+            //Information
+            L[A+'finance_public_documents']=       {table_id:'20009600',var:v,url:B+'/modules/finance/information/finance_public_documents.html'};
+
+            //Request processing
+            L[A+'all_purchase_order']=     {table_id:'20009596',var:v,url:B+'/modules/finance/request_processing/purchase_order.html',form_module:A+'all_purchase_order_form'};
+            L[A+'all_purchase_order_form']={table_id:'20009596',var:v,url:B+'/modules/my_area/request/finance/purchase_order.form.html'};
+            L[A+'finance_processing']=     {table_id:'20009631',var:v,url:B+'/modules/finance/request_processing/processing.html'};
+            L[A+'finance_approved_info']=  {table_id:'20009598',var:v,url:B+'/modules/finance/request_processing/approved_info.html'};
+
+
+            //administrator
+            L[A+'managers']=                        {table_id:'20009586',var:v,url:B+'/modules/hr/administrator/managers.html'};
+            L[A+'list_finance']=                    {table_id:'20009601',var:v,url:B+'/modules/finance/administrator/alert_email_list.html'};
+            L[A+'finance_approvement_signature']=   {table_id:'20009598',var:v,url:B+'/modules/finance/administrator/approvement_signature.html'};
+            L[A+'finance_processing_signature']=    {table_id:'20009631',var:v,url:B+'/modules/finance/administrator/processing_signature.html'};
+
+
+
+
+            L[A+'staff_panel']=             {table_id:'--------',var:v,url:B+'/modules/navigation/staff_panel.html'};
+            L[A+'wiki']=                    {table_id:'20009594',var:v,url:B+'/modules/help/help.html',form_module:A+'wiki_form'};
+            L[A+'wiki_form']=               {table_id:'20009594',var:v,url:B+'/modules/help/help.form.html'};
+            L[A+'wiki_view']=               {table_id:'20009594',var:v,url:B+'/modules/help/help.view.html'};
+
+
+        }
+        _module_list();
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _nav_name='Human Resources';
+            _set_nav_link();
+            _set_permissions();
+        });
+        //---------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.css
+    #D__ID{
+        background: url("__BASE__/vmiis/common-code/image/texture.png");
+    }
+</style>

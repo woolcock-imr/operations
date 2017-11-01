@@ -1,0 +1,90 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid_without_export.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        _record_type='s2';
+        //-------------------------------------
+        _fields="_Form,Name,_Approving,Confirmed_by,Approved_by,_Approved_Info";
+        _fields+=",_gridHidden|Does new appointee require access<br>to Laboratories on Level 3|Access_level_3";
+        _fields+=",_gridHidden|Will the new appointee come into<br>contact with patients or participants|Contact_patients_or_participants";
+        _fields+=",_gridHidden|Will the new appointee be involved<br>in research with study participants|Research_with_participants";
+        _fields+=",Submit Date|DateTime,Submitted by|Author";
+        //-------------------------------------
+        $('#D__ID').on('load',function(){
+            $('#new__ID').hide();
+            $('#save__ID').hide();
+            _op=$vm.vm['__ID'].op;
+            _set_req(); _request_data();
+        })
+        //-------------------------------------
+        $('#D__ID').on('back',function(){ _set_req(); _request_data(); })
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Name':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approving':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by!='') return;
+                    td.html("<u style='cursor:pointer'>Approving</u>");
+                    td.find('u').on('click',function(){
+
+                        var title=records[I].Name+', computer and access card request approved by '+$vm.user;
+                        var info="Name:"+records[I].Name;
+
+                        var a='Yes'; if(records[I].Access_level_3=='0') a='No';
+                        info+="<br><br>Does new appointee require access to Laboratories on Level 3:"+a;
+
+                        var a='Yes'; if(records[I].Contact_patients_or_participants=='0') a='No';
+                        info+="<br>Will the new appointee come into contact with patients or participants:"+a;
+
+                        var a='Yes'; if(records[I].Research_with_participants=='0') a='No';
+                        info+="<br>Will the new appointee be involved in research with study participants:"+a;
+
+                        $vm.load_module_by_name(_app_id+'my_hr_approving',$vm.root_layout_content_slot,
+                            {title:title,pid:'20009577',uid:records[I].UID,rid:records[I].ID,
+                            info:info,s3:records[I].Author,
+                            date:records[I].DateTime}
+                        )
+                    });
+                    break;
+                case 'Confirmed_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case 'Approved_by':
+                    records[I].vm_custom[field]=true;
+                    break;
+                case '_Approved_Info':
+                    records[I].vm_custom[field]=true;
+                    if(records[I].Approved_by=='') return;
+                    td.html("<u style='cursor:pointer'>Approved Info</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name(_app_id+'my_hr_approved_info_s2',$vm.root_layout_content_slot,
+                            {rid:records[I].ID,pid_uid:_db_pid+'/'+records[I].UID}
+                        )
+                    });
+                    break;
+                case 'Access_level_3':
+                case 'Contact_patients_or_participants':
+                case 'Research_with_participants':
+                    if(records[I][field]=='1') td.html('Yes');
+                    else td.html('No');
+                    break;
+            }
+        }
+        //-------------------------------------
+        _set_req=function(){
+            _req={cmd:'query_records_s3',db_pid:_db_pid,fields:'ID,UID,Information,DateTime,Author',
+            s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

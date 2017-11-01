@@ -1,0 +1,220 @@
+<div>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a><span class=tab__ID></span><span id=nav_link__ID></span>
+    </div>
+    <div style='clear:left;'>
+        <div class='nav__ID'>
+            <span>HR</span>
+            <ul>
+                <li data-name=new_appointment>New Appointment</li>
+                <li data-name=staff_departure>Staff Departure</li>
+            </ul>
+            <br>
+            <span>Engineering</span>
+            <ul>
+                <li data-name=knowledge_base>Knowledge Base</li>
+                <li data-name=meddra>Adverse Event Classification MedDRA</li>
+            </ul>
+            <br>
+        </div>
+        <div class='nav__ID'>
+            <span>Facilities</span>
+            <ul>
+                <li data-name=daily>Car Booking (Daily)</li>
+                <li data-name=weekly>Car Booking (Weekly)</li>
+                <li data-name=monthly>Car Booking (Monthly)</li>
+                <li data-name=booking_record>Car Rooking Records</li>
+                <li data-name=car_use_reimbursement_form>Car Use Reimbursement Form</li>
+            </ul>
+        </div>
+        <div class='nav__ID'>
+            <span>Laboratory</span>
+            <ul>
+                <li data-name=temperature>Temperature monitoring</li>
+                <li data-name=pc2_Induction_form data-s=1>PC2 Induction</li>
+                <li data-name=pc2_Induction>PC2 Induction Results</li>
+            </ul>
+        </div>
+        <div class='nav__ID'>
+            <span>Level 2</span>
+            <ul>
+                <li data-name=coreplus_invoice_import>Coreplus invoice import</li>
+                <li data-name=coreplus_rejected_medicare_import>Coreplus rejected medicare import</li>
+                <li data-name=coreplus_rejected_amount>Coreplus rejected medicare details</li>
+                <br>
+                <li data-name=coreplus_medical_services_import>Coreplus Medical Services</li>
+                <br>
+                <li data-name=coreplus_new_referrers>New Referrers without referrers name</li>
+                <li data-name=coreplus_new_referrers_with_name>New Referrers with referrers name</li>
+<!--
+                <li data-name=sandman>Sandman</li>
+                <li data-name=alice>Alice</li>
+                <li data-name=compumedics>Compumedics</li>
+-->
+            </ul>
+        </div>
+        <div class='nav__ID'>
+            <span>HR Setup</span>
+            <ul>
+                <li data-name=list_managers>Alert Email List - Managers</li>
+                <li data-name=list_it>Alert Email List - IT</li>
+                <li data-name=list_lab>Alert Email List - Lab</li>
+                <li data-name=list_pi>Alert Email List - Participant Interaction</li>
+                <li data-name=list_student>Alert Email List - Student</li>
+                <li data-name=list_clinic>Alert Email List - Clinic</li>
+                <li data-name=list_hr>Alert Email List - HR</li>
+            </ul>
+            <br>
+            <span>Facility Setup</span>
+            <ul>
+                <li data-name=car>Cars</li>
+            </ul>
+        </div>
+
+
+        <div class='nav__ID'>
+        </div>
+
+    </div>
+</div>
+<script>
+    //---------------------------------------------
+    function F__ID(){
+        //---------------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //---------------------------------------------
+        _app_id='woolcock_operation_';
+        //---------------------------------------------
+        var _module_list=function(){
+            var L=$vm.module_list,A=_app_id,B=$vm.hosting_path+'/woolcock-imr/operation';
+            V=$vm.hosting_path+'/woolcock-imr/volunteer-database';
+            var v={
+                app_id:_app_id,
+            }
+            //HR
+            L[A+'new_appointment']=            {table_id:'20000911',var:v,url:B+'/modules/hr/new_appointment.html',form_module:A+'new_appointment_form'};
+            L[A+'new_appointment_form']=       {table_id:'20000911',var:v,url:B+'/modules/hr/new_appointment.form.html',
+                list_managers_tid:'20002145',
+                list_student:'20008634',
+                list_it:'20002151',
+                list_lab:'20002152',
+                list_pi:'20002153',
+                list_clinic:'20002154',
+            };
+            L[A+'staff_departure']=            {table_id:'20008635',var:v,url:B+'/modules/hr/staff_departure.html',form_module:A+'staff_departure_form'};
+            L[A+'staff_departure_form']=       {table_id:'20008635',var:v,url:B+'/modules/hr/staff_departure.form.html'};
+            L[A+'list_clinic']=                {table_id:'20004672',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'list_managers']=              {table_id:'20002145',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'list_it']=                    {table_id:'20002151',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'list_lab']=                   {table_id:'20002152',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'list_pi']=                    {table_id:'20002153',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'list_student']=               {table_id:'20008634',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'list_hr']=                    {table_id:'20002154',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            //Lab
+            L[A+'temperature']=                {table_id:'20007567',var:v,url:B+'/modules/laboratory/temperature_monitoring.html'};
+            L[A+'pc2_Induction']=              {table_id:'20002110',var:v,url:B+'/modules/laboratory/pc2_Induction.html',form_module:A+'pc2_Induction_form'};
+            L[A+'pc2_Induction_form']=         {table_id:'20002110',var:v,url:B+'/modules/laboratory/pc2_Induction_form.html'};
+
+            //Facilities
+            L[A+'daily']=                      {table_id:'20000908',var:v,url:B+'/modules/facilitiy/car_booking/calendar/daily.html',
+                                                                    booking_record:'woolcock_operation_booking_record',
+                                                                    car:'woolcock_operation_car',
+                                                             };
+            L[A+'weekly']=                     {table_id:'20000908',var:v,url:B+'/modules/facilitiy/car_booking/calendar/weekly.html',
+                                                                    booking_record:'woolcock_operation_booking_record',
+                                                                    daily:'woolcock_operation_daily'
+                                                             };
+            L[A+'monthly']=                    {table_id:'20000908',var:v,url:B+'/modules/facilitiy/car_booking/calendar/monthly.html',
+                                                                    booking_record:'woolcock_operation_booking_record',
+                                                                    daily:'woolcock_operation_daily'
+                                                             };
+            L[A+'booking_record']=             {table_id:'20000908',var:v,url:B+'/modules/facilitiy/car_booking/booking/booking_record.html'};
+            L[A+'car']=                        {table_id:'20000906',var:v,url:B+'/modules/facilitiy/car_booking/car/car.html'};
+            L[A+'car_use_reimbursement_form']= {table_id:'20000044',var:v,url:B+'/modules/facilitiy/car_booking/car/car_use_reimbursement_form.html'};
+
+
+            //Engineering
+            L[A+'knowledge_base']=                {table_id:'20000441',var:v,url:B+'/modules/engineering/knowledge_base.html'};
+            L[A+'meddra']=                        {table_id:'20009283',var:v,url:B+'/modules/engineering/meddra.html'};
+
+            L[A+'volunteer_registration_record']= {table_id:'20008533',var:v,url:B+'/modules/volunteer_database/registration_demographic.html'};
+            L[A+'call_log']=                      {table_id:'20009655',var:v,url:B+'/modules/volunteer_database/call_log.html'};
+//            L[A+'research_participation']=        {table_id:'20009667',var:v,url:B+'/modules/volunteer_database/research_participation.html'};
+            L[A+'project_application']=        {table_id:'20009694',var:v,url:B+'/modules/volunteer_database/project_application.html'};
+            L[A+'project_application_request']=        {table_id:'20009694',var:v,url:B+'/modules/volunteer_database/project_application_request.html'};
+            L[A+'project_application_approval']=        {table_id:'2000994',var:v,url:B+'/modules/volunteer_database/project_application_approval.html'};
+            L[A+'medical_research_volunnter_panel'] ={table_id:'--------',var:v,url:B+'/modules/navigation/medical_research_volunteer_panel.html'};
+
+            L[A+'research_participation']={table_id:'20009681',var:v,url:B+'/modules/volunteer_database/participant_a_medical_research_project.html',volunteer_pid:'20008533'};
+
+            //Level2
+            L[A+'coreplus_input_1']=                        {table_id:'20009536',var:v,url:B+'/modules/level2/coreplus_input_1.html'};
+            L[A+'coreplus_input_2']=                        {table_id:'20009537',var:v,url:B+'/modules/level2/coreplus_input_2.html'};
+            L[A+'sandman']=                                 {table_id:'20009304',var:v,url:B+'/modules/level2/sandman.html'};
+            L[A+'alice']=                                   {table_id:'20009305',var:v,url:B+'/modules/level2/alice.html'};
+            L[A+'compumedics']=                             {table_id:'20009306',var:v,url:B+'/modules/level2/compumedics.html'};
+
+            L[A+'volunteer_novelstart']=                     {table_id:'20009539',var:v,url:B+'/modules/volunteer_database/novelstart.html'};
+
+            L[A+'staff']=                     {table_id:'20009572',var:v,url:B+'/modules/hr/staff.html'};
+            L[A+'staff_public_info']=         {table_id:'20009572',var:v,url:B+'/modules/hr/child_records/public_info.html'};
+            L[A+'staff_info']=                {table_id:'20009572',var:v,url:B+'/modules/hr/staff_info.html'};
+            L[A+'group']=                     {table_id:'20009573',var:v,url:B+'/modules/hr/department.html'};
+            L[A+'managers']=         {table_id:'20009586',var:v,url:B+'/modules/hr/managers.html'};
+            L[A+'hr_public_documents']=       {table_id:'20009585',var:v,url:B+'/modules/hr/hr_public_documents.html'};
+
+            L[A+'hr_list_it']=                    {table_id:'20009587',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'hr_list_lab']=                   {table_id:'20009588',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'hr_list_pi']=                    {table_id:'20009589',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'hr_list_student']=               {table_id:'20009590',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'hr_list_clinic']=                {table_id:'20009591',var:v,url:B+'/modules/hr/alert_email_list.html'};
+            L[A+'hr_list_hr']=                    {table_id:'20009592',var:v,url:B+'/modules/hr/alert_email_list.html'};
+
+            L[A+'my_area']=                     {table_id:'--------',var:v,url:B+'/modules/navigation/my_area.html'};
+            L[A+'hr']=                          {table_id:'--------',var:v,url:B+'/modules/navigation/hr.html'};
+            L[A+'finance']=                     {table_id:'--------',var:v,url:B+'/modules/navigation/finance.html'};
+            L[A+'it']=                          {table_id:'--------',var:v,url:B+'/modules/navigation/it.html'};
+            L[A+'staff_panel']=                 {table_id:'--------',var:v,url:B+'/modules/navigation/staff_panel.html'};
+        }
+        _module_list();
+        //---------------------------------------------
+        VmInclude:__BASE__/woolcock-imr/operation/modules/coreplus/module_list.js
+        //---------------------------------------------
+        var redirect_done=0;
+        //---------------------------------------------
+        $('#D__ID').on('load',function(){
+            _nav_name='Operations';
+            _set_nav_link();
+            _set_permissions();
+            redirect();
+        });
+        //---------------------------------------------
+        var redirect=function(){
+            if($vm.ready==1){
+                var query = window.location.search.substring(1).split('&');
+                if(redirect_done==0 && query[0]=='redirect=car_booking'){
+                    redirect_done=1;
+                    $vm.load_module_by_name(_app_id+'daily',$vm.root_layout_content_slot,{});
+                }
+                else if(redirect_done==0 && query[0]=='redirect=new_appointment'){
+                    redirect_done=1;
+                    $vm.load_module_by_name(_app_id+'new_appointment',$vm.root_layout_content_slot,{});
+                }
+                else if(redirect_done==0 && query[0]=='redirect=approvement'){
+                    redirect_done=1;
+                    alert(query[0])
+                    //$vm.load_module_by_name(_app_id+'new_appointment',$vm.root_layout_content_slot,{});
+                }
+            }
+            else setTimeout(redirect,300);
+        };
+        //---------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/navigation/navigation.css
+    #D__ID{
+        background: url("__BASE__/vmiis/common-code/image/texture.png");
+    }
+</style>

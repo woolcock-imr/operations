@@ -1,0 +1,74 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+        //-------------------------------------
+        _fields="_Form,Appointment,First_name,Surname,_Hidden|Title,_Hidden|Gender,_Hidden|Appointee,_Hidden|Residential_address,_Hidden|DOB,_Hidden|Email,_Hidden|Phone_Number,Overseas";
+        _fields+=",_Hidden|Visa_type,_Hidden|CV,_Hidden|Position_title,_Hidden|Reporting_to,_Hidden|Role,_Hidden|Name_of_previous_occupant,_Hidden|Group,_Hidden|Project_code,Type_of_Appointment";
+        _fields+=",_Hidden|Number_of_hours,_Hidden|Days_of_the_week_worked_Monday,_Hidden|Days_of_the_week_worked_Tuesday,_Hidden|Days_of_the_week_worked_Wednesday";
+        _fields+=",_Hidden|Days_of_the_week_worked_Thursday,_Hidden|Days_of_the_week_worked_Friday,_Hidden|Office_No";
+        _fields+=",_Hidden|Annual_Salary,Start_date,_Hidden|End_date,_Hidden|Children_Check,_Hidden|Police_Check,_Hidden|Extension_Number,Computer,_Hidden|Unikey,Security_card,Level_3_Access";
+        _fields+=",Vaccination,_Hidden|Study_Participants,_Hidden|Type_of_student,_Hidden|Student_Source,_Hidden|University,_Hidden|Faculty";
+        _fields+=",_Hidden|School,_Hidden|Discipline,_Hidden|Degree_Future,_Hidden|Study_Type,_Hidden|Primary_Supervisor,_Hidden|Primary_Supervisor_Email,_Hidden|Woolcock_Supervisor,_Hidden|Woolcock_Supervisor_Email,_Hidden|Degree_Now,_Hidden|scholarship,_Hidden|scholarship_Name";
+        _fields+=",Manager Approved|Approved,HR_Confirm,HR_Send_Alerts,_Hidden|Alert_Email";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Appointment':
+                    var html="<select style='border:0;''>\
+                            <option value=''>--</option>\
+                            <option>Employee</option>\
+                            <option>Affiliate</option>\
+                            <option>Student</option>\
+                            <option>Honorary Affiliate</option>\
+                            <option>Clinician</option>\
+                        </select>\
+                    ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_select.js
+                    break;
+                case 'CV':
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_file.js
+                    break;
+                case 'DOB':
+                    records[I].vm_custom[field]=true;
+                    td.html('<input style="border:0; width:80px" />')
+                    td.find('input').val(records[I][field])
+                    td.find('input').datepicker({dateFormat:'dd/mm/yy',changeMonth:true, changeYear:true,yearRange: "-100:+0",onClose:function(dateText) {
+                        set_value(dateText,records,I,field);
+                    }});
+                    break;
+            }
+            //-------------------------------------
+        }
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data();  })
+        //-------------------------------------
+        _new_pre_data_process=function(){
+            var form=$('#grid__ID tr:nth-child(2)').find('u:first');
+            form.triggerHandler('click');
+        }
+        //-------------------------------------
+        /*
+        _data_process_after_render=function(){
+            if($vm.vm['__ID'].op.sql_where!==undefined){
+                if(_records.length==0){
+                    $('#new__ID').triggerHandler('click');
+                }
+                if(_records.length==1){
+                    var form=$('#grid__ID tr:nth-child(2)').find('u:first');
+                    form.triggerHandler('click');
+                }
+            }
+        }
+        */
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

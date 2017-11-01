@@ -1,0 +1,553 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/back_save.html
+    <form id=F__ID>
+        <table id=tb__ID style='width:900px;'>
+            <colgroup>
+                <col style='width:300px' />
+                <col />
+            </colgroup>
+
+            <tr><td colspan=2 class='header__ID'>New Appointment Form</td></tr>
+            <tr><td colspan=2>
+                The information collected on this form is required to assist your new employee, Affiliate, Honorary Affiliate, Student, Clinician or Volunteer to quickly contribute to the Woolcock and to add their details to various lists (phone, security access card), website (intranet, Woolcock website), as well as arranging Laboratory & computer access (server, email) where applicable.
+                <br><br>To assist with this process, please complete the form <b>AS SOON AS POSSIBLE PRIOR TO THE START DATE</b> (minimum 1 week)
+                <br><br>
+            </td></tr>
+            <tr><td>Please indicate the category of appointment</td><td data-id=Appointment data-custom=1>
+                <select>
+                    <option>--</option>
+                    <option>Employee</option>
+                    <option>Affiliate</option>
+                    <option>Student</option>
+                    <option value='Honorary Affiliate'>Honorary Affiliate</option>
+                    <option>Clinician</option>
+                    <option>Volunteer</option>
+                </select>
+            </td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section A:  APPOINTEE DETAILS  </td></tr>
+            <tr><td>First name</td><td data-id=First_name ></td></tr>
+            <tr><td>Surname</td><td data-id=Surname></td></tr>
+            <tr><td>Title</td><td data-id='Title'></td></tr>
+            <tr><td>Gender</td><td data-id='Gender' data-custom=1>
+                <input type="radio" name="Gender__ID" value="Male" id=gender_male><label for=gender_male >&nbsp;Male</label>&nbsp;&nbsp;
+                <input type="radio" name="Gender__ID" value="Female" id=gender_female><label for=gender_female >&nbsp;Female</label>
+            </td></tr>
+            <tr><td>Appointee</td><td data-id=Appointee data-custom=1>
+                    <input type='radio'  name=Appointee__ID value=New id=Appointee_new ><label for=Appointee_new >&nbsp;New appointee</label>&nbsp;&nbsp;
+                    <input type='radio'  name=Appointee__ID value=Existing id=Appointee_existing ><label for=Appointee_existing >&nbsp;Existing appointee</label>
+            </td></tr>
+            <tr><td>Address</td><td data-id='Residential_address'></td></tr>
+            <tr><td>Date of birth</td><td data-id='DOB'></td></tr>
+            <tr><td>Personal email address</td><td data-id='Email'></td></tr>
+            <tr><td>Personal phone/mobile number</td><td data-id='Phone_Number'></td></tr>
+
+            <!--<tr><td>Name of current employer (if applicable)</td><td data-id=Employer></td></tr>-->
+
+            <tr><td>Is the appointee from overseas? </td><td data-id=Overseas data-custom=1><input type=checkbox id=overseas /><label for=overseas >&nbsp;Yes</label></td></tr>
+            <tr class=visa_section__ID><td>Visa Type (if known)</td><td data-id=Visa_type></td></tr>
+            <!--
+                        <tr class=visa_section__ID><td>Visa start date</td><td data-id=Visa_start_date data-custom=1></td></tr>
+                        <tr class=visa_section__ID><td>Visa end date</td><td data-id=Visa_end_date data-custom=1></td></tr>
+            -->
+            <tr><td>Please attach Appointee's CV</td><td data-id=CV></td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section B:  APPOINTMENT DETAILS</td></tr>
+            <tr class=hide_when_student><td>Position title</td><td data-id='Position_title'></td></tr>
+            <tr class=hide_when_student><td>Reporting to</td><td data-id=Reporting_to></td></tr>
+            <tr class=hide_when_student><td>Role</td><td data-id=Role data-custom=1>
+                    <input type='radio' name=Role__ID value=New id=role_new><label for=role_new >&nbsp;New role</label>&nbsp;&nbsp;
+                    <input type='radio' name=Role__ID value=Role id=role_exists><label for=role_exists >&nbsp;Role currently exists</label>
+            </td></tr>
+            <tr class=hide_when_student><td>Name of previous occupant</td><td data-id=Name_of_previous_occupant></td></tr>
+            <tr class=hide_when_student><td>Depart/Group</td><td data-id=Group></td></tr>
+            <tr class=hide_when_student><td>Project code(s)</td><td data-id=Project_code></td></tr>
+            <tr class=hide_when_student ><td>Type of Appointment</td><td data-id=Type_of_Appointment data-custom=1>
+                <select>
+                    <option>--</option>
+                    <option>Ongoing appointment Full Time</option>
+                    <option>Ongoing appointment Part Time</option>
+                    <option>Fixed-term appointment Full Time</option>
+                    <option>Fixed-term appointment Part Time</option>
+                    <option>Casual appointment</option>
+                    <option>Non-paid appointment</option>
+                </select>
+            </td></tr>
+
+
+
+            <tr class=parttime__ID><td>If appointment part-time,Number of hours per week</td><td data-id=Number_of_hours></td></tr>
+            <tr class=parttime__ID><td>Days of the week worked</td><td data-multi=1>
+                <input name=Days_of_the_week_worked_Monday data-id=Days_of_the_week_worked_Monday data-custom=1 type=checkbox id=work_monday /><label for=work_monday >&nbsp;Monday</label><br>
+                <input name=Days_of_the_week_worked_Tuesday data-id=Days_of_the_week_worked_Tuesday data-custom=1 type=checkbox id=work_tuesday /><label for=work_tuesday >&nbsp;Tuesday</label><br>
+                <input name=Days_of_the_week_worked_Wednesday data-id=Days_of_the_week_worked_Wednesday data-custom=1 type=checkbox id=work_wednesday /><label for=work_wednesday >&nbsp;Wednesday</label><br>
+                <input name=Days_of_the_week_worked_Thursday data-id=Days_of_the_week_worked_Thursday data-custom=1 type=checkbox id=work_thursday /><label for=work_thursday >&nbsp;Thursday</label><br>
+                <input name=Days_of_the_week_worked_Friday data-id=Days_of_the_week_worked_Friday data-custom=1 type=checkbox id=work_friday /><label for=work_friday >&nbsp;Friday</label><br>
+            </td></tr>
+            <tr class=not_casual__ID><td>Ongoing and fixed-term appointments.  Annual full-time base salary (excluding superannuation)</td><td><input name=Annual_Salary id=Annual_Salary type=text /></td></tr>
+            <tr class=casual__ID><td>Casual appointment hourly rate of pay (including 25% loading)</td><td><input name=Hourly_Rate id=Hourly_Rate type=text /></td></tr>
+            <tr><td>Start date</td><td data-id=Start_date data-custom=1><input type=text /></td></tr>
+            <tr class=fixed_term__ID><td>End date(if fixed term)</td><td data-id=End_date data-custom=1><input type=text /></td></tr>
+            <tr><td>In this role will the occupant be working directly with children or handling documentation relating to children?</td><td data-id=Children_Check data-custom=1>
+                <input type='radio'  name=Children_Check__ID value=1 id=Children_Check_1__ID><label for=Children_Check_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Children_Check__ID value=0 id=Children_Check_0__ID><label for=Children_Check_0__ID >&nbsp;No</label>
+            </td></tr>
+            <tr><td>Will this position be handling cash</td><td data-id=Police_Check data-custom=1>
+                <input type='radio'  name=Police_Check__ID value=1 id=Police_Check_1__ID><label for=Police_Check_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Police_Check__ID value=0 id=Police_Check_0__ID><label for=Police_Check_0__ID >&nbsp;No</label>
+            </td></tr>
+            <tr><td>New appointee's extension number</td><td><input name=Extension_Number id=Extension_Number type=text /></td></tr>
+            <tr><td>Workstation/ Office No</td><td><input name=Office_No id=Office_No type=text /></td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section C: REQUIREMENTS FOR SECURITY AND ACCESS</td></tr>
+            <tr><td>Computer required?</td><td data-id=Computer data-custom=1><input type=checkbox id=Computer /><label for=Computer >&nbsp;Yes</label></td></tr>
+            <tr><td>UniKey Section</td><td data-id=Unikey data-custom=1>
+                    <input type='radio'  name=Unikey__ID value=Never id=unikey_never><label for=unikey_never >&nbsp;Never been an employee or student at the University of Sydney</label><br>
+                    <input type='radio'  name=Unikey__ID value=Employee id=unikey_employee><label for=unikey_employee >&nbsp;Current / previous employee of the University of Sydney </label><br>
+                    <input type='radio'  name=Unikey__ID value=Student id=unikey_student><label for=unikey_student >&nbsp;Current / previous student of the University of Sydney</label><br>
+                    <input type='radio'  name=Unikey__ID value=DK id=unikey_dk><label for=unikey_dk >&nbsp;Don't know</label>
+            </td></tr>
+            <tr><td>Security card access required</td><td  data-id=Security_card data-custom=1><input type=checkbox id=Security_card /><label for=Security_card >&nbsp;Yes</label></td></tr>
+            <tr><td colspan=2 class='subheader__ID'>Section D: LABORATORY ACCESS AND WORKING WITH BIOLOGICAL SAMPLES OR IN CLINIC</td></tr>
+            <tr><td>Does new appointee require access to Laboratories on Level 3?</td><td  data-id=Level_3_Access data-custom=1>
+                <input type='radio'  name=Level_3_Access__ID value=1 id=Level_3_Access_1__ID><label for=Level_3_Access_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Level_3_Access__ID value=0 id=Level_3_Access_0__ID><label for=Level_3_Access_0__ID >&nbsp;No</label>
+            </td></tr>
+            <tr><td>Will the new appointee come into contact with patients/participants?</td><td  data-id=Vaccination data-custom=1>
+                <input type='radio'  name=Vaccination__ID value=1 id=Vaccination__ID_1__ID><label for=Vaccination__ID_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Vaccination__ID value=0 id=Vaccination__ID_0__ID><label for=Vaccination__ID_0__ID >&nbsp;No</label>
+            <tr><td>Will the new appointee be involved in research with study participants?</td><td  data-id=Study_Participants data-custom=1>
+                <input type='radio'  name=Study_Participants__ID value=1 id=Study_Participants_1__ID><label for=Study_Participants_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Study_Participants__ID value=0 id=Study_Participants_0__ID><label for=Study_Participants_0__ID >&nbsp;No</label>
+            </td></tr>
+            <tr class=student_section__ID><td colspan=2 class='subheader__ID'>Section E: APPOINTMENT OF STUDENTS ONLY</td></tr>
+            <tr class=student_section__ID><td>Type of student</td><td>
+                <select name=Type_of_student id=Type_of_student >
+                    <option>--</option>
+                    <option>PhD</option>
+                    <option>Masters</option>
+                    <option>Honours</option>
+                    <option>Undergraduate</option>
+                    <option value='Summer Scholarship'>Summer Scholarship</option>
+                    <option>Other eg&lt;6months</option>
+                </select>
+            </td></tr>
+            <tr class=student_section__ID><td>Is the student a local or international student</td><td data-id=Student_Source data-custom=1>
+                    <input type='radio'  name=Student_Source__ID value=Local id=student_local ><label for=student_local >&nbsp;Local</label>&nbsp;&nbsp;
+                    <input type='radio'  name=Student_Source__ID value=International id=student_international ><label for=student_international >&nbsp;International</label>
+            </td></tr>
+            <tr class=student_section__ID><td>Which University is the student enrolled at?</td><td><input name=University id=University type=text /></td></tr>
+    		<tr class=student_section__ID><td>Which Faculty?</td><td><input name=Faculty id=Faculty type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Which School?</td><td><input name=School id=School type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Which discipline?</td><td><input name=Discipline id=Discipline type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Which degree is the student studying?</td><td><input name=Degree_Future id=Degree_Future type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Full Time or Part Time Study?</td><td data-id=Study_Type data-custom=1 >
+                <input type=radio value=Full name=Study_Type__ID id=study_type_full><label for=study_type_full >&nbsp;Full Time</label>&nbsp;&nbsp;
+                <input type=radio value=Part name=Study_Type__ID id=study_type_part><label for=study_type_part >&nbsp;Part Time</label>
+            </td></tr>
+    		<tr class=student_section__ID><td>Commencement date of this study?</td><td><input name=Study_start id=Study_start type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Who is the Primary Supervisor?</td><td><input name=Primary_Supervisor id=Primary_Supervisor type=text></input></td></tr>
+            <tr class=student_section__ID><td>Primary Supervisor's Email</td><td><input name=Primary_Supervisor_Email type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Who is the Woolcock Supervisor?</td><td><input name=Woolcock_Supervisor id=Woolcock_Supervisor type=text></input></td></tr>
+            <tr class=student_section__ID><td>Woolcock Supervisor's Email</td><td><input name=Woolcock_Supervisor_Email type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Which degree/qualification does the student already hold?</td><td><input name=Degree_Now id=Degree_Now type=text></input></td></tr>
+    		<tr class=student_section__ID><td>Does the student hold a scholarship? </td><td data-id=scholarship data-custom=1>
+                <input type=radio value=Yes name=scholarship__ID id=scholarship_yes><label for=scholarship_yes >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type=radio value=No name=scholarship__ID id=scholarship_no><label for=scholarship_no >&nbsp;No</label>
+            </td></tr>
+    		<tr class=student_section__ID><td>If so, which one/what is it called?</td><td><input name=scholarship_Name id=scholarship_Name type=text></input></td></tr>
+
+            <tr class=approval><td colspan=2 class='subheader__ID'>Section F: Approval</td></tr>
+            <tr><td>Select Group Leader for Approval<br><i>An Alert Email will be sent to selected Group Leader when "Submit" is clicked.</i></td><td data-id=Alert_Email data-custom=1><select></select>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a id=save_Send_email__ID class=""  >Submit</a>&nbsp;&nbsp; </td></tr>
+            <tr><td>Approval<br><i>Group Leader checks the box for approval. <br>Honorary Affiliate and Affiliate don't need approval</i></td><td data-id=Approved data-custom=1>
+                <input type='radio'  name=Approved__ID value=1 id=Approved_1__ID><label for=Approved_1__ID >&nbsp;Yes</label>&nbsp;&nbsp;
+                <input type='radio'  name=Approved__ID value=0 id=Approved_0__ID><label for=Approved_0__ID >&nbsp;No</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;<a id=save_Send_email_2__ID class=""  >Submit</a>&nbsp;&nbsp;When approved this form will be sent to HR
+            </td></tr>
+            <tr><td colspan=2 class='subheader__ID'>HR Admin only  </td></tr>
+            <tr><td>HR Confirms Appointment </td><td>
+                <input type=checkbox data-id=HR_Confirm data-custom=1 />
+            </td></tr>
+            <tr><td>HR - Send alert to relevant staff<br><i>An Alert Email will be sent to relevant staff when box is ticked and "Submit" clicked.</i></td><td>
+                <input type=checkbox data-id=HR_Send_Alerts data-custom=1 /> &nbsp;&nbsp;&nbsp;&nbsp;<a id=save_Send_operation_email__ID class=""  >Submit</a>&nbsp;&nbsp;
+            </td></tr>
+
+        </table>
+    </form>
+</section>
+<script>
+    function F__ID(){
+        //----------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/form.js
+        //----------------------------------
+        $('#D__ID').on('load',function(){
+            _init();
+            _field_process();
+            custom_field_process();
+            set_student( $('#tb__ID tbody td[data-id=Appointment]').find('select') );
+            check_overseas($('#tb__ID tbody td[data-id=Overseas]').find('input'))
+            set_type_of_appointment($('#tb__ID tbody td[data-id=Type_of_Appointment]').find('select'));
+        })
+        //----------------------------------
+        var custom_field_process=function(){
+            $('#tb__ID tbody *[data-custom=1]').each(function(){
+                var field=$(this).attr('data-id');
+                switch(field){
+                    case 'Appointment':
+                        $(this).find('select').val(_records[I][field])
+                        $(this).find('select').on('input', function(){
+                            _set_value($(this).val(),_records,I,field);
+                            set_student($(this));
+                        });
+                    break;
+                    case 'Children_Check':
+                    case 'Police_Check':
+                    case 'Computer':
+                    case 'Security_card':
+                    case 'Level_3_Access':
+                    case 'Vaccination':
+                    case 'Study_Participants':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                    break;
+                    case 'Overseas':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                            check_overseas($(this));
+                        });
+                    break;
+                    case 'Approved':
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).find('input').prop('checked', true);
+                        $(this).find('span').text(_records[I][field+'_msg']);
+                        $(this).find('input').on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                            if( $(this).prop('checked')===true){
+                                _records[I][field+'_by']=$vm.user;
+                                _records[I][field+'_date']=$vm.date_to_string_dmy($vm.date_today());
+                                _records[I][field+'_msg']='Approved by '+$vm.user+' on '+$vm.date_to_string_dmy($vm.date_today());
+                                $(this).parent().find('span').text(_records[I][field+'_msg']);
+                            }
+                        });
+                    break;
+
+                    case 'Type_of_Appointment':
+                        $(this).find('select').val(_records[I][field])
+                        $(this).find('select').on('input', function(){
+                            _set_value($(this).val(),_records,I,field);
+                            set_type_of_appointment($(this));
+                        });
+                    break;
+
+                    case 'Alert_Email':
+                        var sql="select top 1 List=@('List') from [TABLE-"+_module.var.list_managers_tid+"]";
+                        var $this=$(this);
+                        $VmAPI.request({data:{cmd:'query_records',sql:sql},callback:function(res){
+                            if(res.records.length>0){
+                                $vm.set_dropdown_list_from_text($this.find('select'),res.records[0].List);
+                                $this.find('select').val(_records[I].Alert_Email);
+                            }
+                        }});
+                        $(this).find('select').on('change',function(){
+                            _set_value($(this).val(),_records,I,field);
+                        })
+                    break;
+
+                    case "Gender":
+                    case "Appointee":
+                    case "Role":
+                    case "Unikey":
+                    case "Student_Source":
+                    case "Study_Type":
+                    case "scholarship":
+                        $(this).find("input[name='"+field+"__ID'][value='"+_records[I][field]+"']").prop('checked', true);
+                        $(this).find("input[name='"+field+"__ID']").off('click').on('click',function(){
+                            _set_value(this.value,_records,I,field);
+                        })
+                    break;
+                    case "Visa_start_date":
+                    case "Visa_end_date":
+                    case "Start_date":
+                    case "End_date":
+                        _records[I].vm_custom[field]=true;
+                        $(this).html('<input style="border:0; width:80px" />')
+                        $(this).find('input').val(_records[I][field])
+                        $(this).find('input').datepicker({dateFormat:'dd/mm/yy',changeMonth:true, changeYear:true,onClose:function(dateText) {
+                            _set_value(dateText,_records,I,field);
+                        }});
+                        break;
+                    case "Days_of_the_week_worked_Monday":
+                    case "Days_of_the_week_worked_Tuesday":
+                    case "Days_of_the_week_worked_Wednesday":
+                    case "Days_of_the_week_worked_Thursday":
+                    case "Days_of_the_week_worked_Friday":
+                    case "HR_Confirm":
+                        if(_records[I][field]=="1" || _records[I][field]=="True" || _records[I][field]=="on" ) $(this).prop('checked', true);
+                        $(this).on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                        break;
+                    case "HR_Send_Alerts":
+                        _records[I][field]='0';
+                        $(this).prop('checked', false);
+                        $(this).on('click', function(){
+                            if($(this).prop("checked") == true)   _set_value("1",_records,I,field);
+                            else                                  _set_value("0",_records,I,field);
+                        });
+                        break;
+                }
+            })
+        }
+        //----------------------------------
+        var set_student=function($this){
+    		if( $this.val()=='Student'){
+    			$('.student_section__ID').css('display','table-row');
+    		}
+    		else{
+    			$('.student_section__ID').css('display','none');
+    		}
+    	};
+        //----------------------------------
+        var check_overseas=function($this){
+            if( $this.prop('checked')===true) $('.visa_section__ID').css('display','table-row');
+            else $('.visa_section__ID').css('display','none');
+        }
+    	//---------------------------------------------
+        var set_type_of_appointment=function($this){
+    		$('.parttime__ID').css('display','none');
+    		$('.casual__ID').css('display','none');
+    		$('.not_casual__ID').css('display','none');
+    		$('.fixed_term__ID').css('display','none');
+
+            if( $this.val()=='Ongoing appointment Part Time' || $this.val()=='Fixed-term appointment Part Time'){
+    			$('.parttime__ID').css('display','table-row');
+            }
+            if( $this.val()=='Casual appointment'){
+    			//$('.casual__ID').css('display','table-row');
+        		$('.casual__ID').css('display','none');
+            }
+            if( $this.val()=='Fixed-term appointment Full Time' || $this.val()=='Fixed-term appointment Part Time'){
+    			$('.fixed_term__ID').css('display','table-row');
+            }
+           	if($this.val()=='Fixed-term appointment Full Time' ||
+           			$this.val()=='Fixed-term appointment Part Time' ||
+           			$this.val()=='Ongoing appointment Full Time' ||
+           			$this.val()=='Ongoing appointment Part Time')
+           	{
+    			//$('.not_casual__ID').css('display','table-row');
+    			$('.not_casual__ID').css('display','none');
+            }
+    	};
+    	//---------------------------------------------
+        var manager_email_address='';
+        var manager_email_type='';
+        var operation_email='';
+        var hr_email='';
+        //---------------------------------------------
+        $('#save_Send_email__ID').on('click',function(){
+            manager_email_address='';
+            manager_email_type='';
+            operation_email='';
+            var email=$('#tb__ID td[data-id=Alert_Email]').find('select').val();
+            if(email!==null && email!='No Alert'){
+                manager_email_address=email;
+                manager_email_type='1';
+            }
+            //alert(manager_email_address+'/'+manager_email_type+'/'+operation_email+'/'+hr_email);
+            //triger save
+            $('#save__ID').triggerHandler('click');
+        })
+        //---------------------------------------------
+        $('#save_Send_email_2__ID').on('click',function(){
+            manager_email_address='';
+            manager_email_type='';
+            operation_email='';
+            hr_email='';
+            var b=$('input[name=Approved__ID]:checked').val();
+            var email=$('#tb__ID td[data-id=Alert_Email]').find('select').val();
+            if(email!==null && email!='No Alert'){
+                manager_email_address=email;
+                if(b=='0'){
+                    manager_email_type='3';
+                }
+                if(b=='1'){
+                    hr_email='1';
+                    manager_email_type='2';
+                }
+            }
+            else if($('#tb__ID td[data-id=Appointment]').find('select').val()=='Affiliate' || $('#tb__ID td[data-id=Appointment]').find('select').val()=='Honorary Affiliate'){
+                hr_email='1';
+            }
+            //alert(manager_email_address+'/'+manager_email_type+'/'+operation_email+'/'+hr_email);
+            //triger save
+            $('#save__ID').triggerHandler('click');
+        })
+        //---------------------------------------------
+        $('#save_Send_operation_email__ID').on('click',function(){
+            manager_email_address='';
+            manager_email_type='';
+            operation_email='';
+            var b=$('#tb__ID input[data-id=HR_Send_Alerts]').prop('checked');
+            if(b===true){
+                operation_email='1';
+            }
+            //alert(manager_email_address+'/'+manager_email_type+'/'+operation_email+'/'+hr_email);
+            //triger save
+            $('#save__ID').triggerHandler('click');
+        })
+        //---------------------------------------------
+        _before_submit_form=function(){
+            /*
+            if(1!=2){
+                $vm.alert("Please answer question 1a");
+                return false;
+            }
+            */
+            return true;
+        }
+        //----------------------------------
+        _after_submit_form=function(I,res,n,_dbv){
+            //alert('after-sub '+manager_email_address+'/'+manager_email_type+'/'+operation_email+'/'+hr_email);
+            if(manager_email_address!==''){
+                if(manager_email_type=='1') sent_emails_manager_type_1(I);
+                else if(manager_email_type=='2') sent_emails_manager_type_2(I);
+                else if(manager_email_type=='3') sent_emails_manager_type_3(I);
+            }
+            if(operation_email=='1') sent_emails_operation();
+            if(hr_email=='1') sent_emails_special(I,_module.list_hr);
+            //----   check and send_emails();
+        }
+        //----------------------------------
+        /*
+        var sent_emails=function(){
+            var manager_email=_records[I].Alert_Email; //manager
+            if(manager_email!==null && manager_email!==undefined && manager_email!=='' && manager_email!='No Alert') sent_emails_manager(I);
+            if(_recores[I].HR_Send_Alerts=='1'){
+                if(_records[I].Appointment=="Student")                               sent_emails_special(I,_module.list_student);
+                if(_records[I].Computer=="1" || _records[I].Security_card=="1")      sent_emails_special(I,$vm.module_list['list_it'].table_id);
+                if(_records[I].Level_3_Access=="1")  sent_emails_special(I,$vm.module_list['list_lab'].table_id);
+                if(_records[I].Study_Participants=="1")        	                     sent_emails_special(I,$vm.module_list['list_pi'].table_id);
+                if( _records[I].Vaccination=="1")        	                         sent_emails_special(I,$vm.module_list['list_clinic'].table_id);
+                no condition                                                     sent_emails_special(I,$vm.module_list['list_hr'].table_id);
+            }
+        };
+        */
+        //---------------------------------------------
+        var sent_emails_operation=function(){
+            if(_records[I].Appointment=="Student")                               sent_emails_special(I,_module.list_student);
+            if(_records[I].Computer=="1" || _records[I].Security_card=="1")      sent_emails_special(I,_module.list_it);
+            if(_records[I].Level_3_Access=="1")                                  sent_emails_special(I,_module.list_lab);
+            if(_records[I].Study_Participants=="1")        	                     sent_emails_special(I,_module.list_pi);
+            if( _records[I].Vaccination=="1" )        	                         sent_emails_special(I,_module.list_clinic);
+            ///*no condition*/                                                     sent_emails_special(I,$vm.module_list['list_hr'].table_id);
+        };
+        //---------------------------------------------
+        var sent_emails_manager_type_1=function(I){
+            var To=_records[I].Alert_Email; //manager
+            if(To==='' || To=='No Alert') return;
+            var From_Address="noresponse@woolcock.org.au";
+            var From_Name="Database Administrator";
+            var Title="New appointment alert";
+            var Body="<br>Appointment of  <b>("+_records[I].First_name+' '+_records[I].Surname+")</b> awaits your approval.<br><br>Please click on this link.<br><br><a href='https://rt.woolcock.org.au/signin_new_appointment.html'>HR New Appointment Form (Login needed)</a>";
+            $VmAPI.request({data:{cmd:'send_email',From_Address:From_Address,From_Name:From_Name,To:To,Title:Title,Body:Body},callback:function(res){
+                alert('The alert email (to: '+To+') has been sent out');
+            }})
+        }
+        //---------------------------------------------
+        var sent_emails_manager_type_2=function(I){
+            var To=_records[I].Alert_Email; //manager
+            if(To==='' || To=='No Alert') return;
+            var From_Address="noresponse@woolcock.org.au";
+            var From_Name="Database Administrator";
+            var Title="New appointment approval alert";
+            var Body="<br>Appointment of  <b>("+_records[I].First_name+' '+_records[I].Surname+")</b> has been approved by you or on your behalf.";
+            $VmAPI.request({data:{cmd:'send_email',From_Address:From_Address,From_Name:From_Name,To:To,Title:Title,Body:Body},callback:function(res){
+                alert('The alert email (to: '+To+') has been sent out');
+            }})
+        }
+        //---------------------------------------------
+        var sent_emails_manager_type_3=function(I){
+            var To=_records[I].Alert_Email; //manager
+            if(To==='' || To=='No Alert') return;
+            var From_Address="noresponse@woolcock.org.au";
+            var From_Name="Database Administrator";
+            var Title="New appointment approval alert";
+            var Body="<br>Appointment of  <b>("+_records[I].First_name+' '+_records[I].Surname+")</b> has been declined by you or on your behalf.";
+            $VmAPI.request({data:{cmd:'send_email',From_Address:From_Address,From_Name:From_Name,To:To,Title:Title,Body:Body},callback:function(res){
+                alert('The alert email (to: '+To+') has been sent out');
+            }})
+        }
+        //---------------------------------------------
+        var sent_emails_special=function(I,pid){
+            var Body="New appointment of <b>"+_records[I].First_name+" "+_records[I].Surname+"</b><br><br><a href='https://rt.woolcock.org.au/signin_new_appointment.html'>HR New Appointment Form (Login needed)</a>";
+            Body+="<br><br>";
+            Body+="<br>First Name: "+_records[I].First_name;
+            Body+="<br>Last Name: "+_records[I].Surname;
+            Body+="<br>Gender: "+_records[I].Gender;
+            Body+="<br>Date of Birth: "+_records[I].DOB;
+            Body+="<br>Phone Number: "+_records[I].Phone_Number;
+            Body+="<br>Start Date: "+_records[I].Start_date;
+            Body+="<br>Existing Unikey Status: "+_records[I].Unikey;
+            Body+="<br>Reporting to"
+            var sql="select top 1 List=@('List') from [TABLE-"+pid+"] where pid="+pid;
+            $VmAPI.request({data:{cmd:'query_records',sql:sql},callback:function(res){
+                if(res.records.length>0){
+                    var To=res.records[0].List.replace(/\r/g,"\n").replace(/\n\n/g,",").replace(/,,/g,",").replace(/,\s*$/, "");
+                    /*
+                        /,\s*$/
+                        The / mark the beginning and end of the regular expression
+                        The , matches the comma
+                        The \s means whitespace characters (space, tab, etc) and the * means 0 or more
+                        The $ at the end signifies the end of the string
+                    */
+                    var From_Address="noresponse@woolcock.org.au";
+                    var From_Name="Database Administrator";
+                    var Title="New appointment alert";
+                    $VmAPI.request({data:{cmd:'send_email',From_Address:From_Address,From_Name:From_Name,To:To,Title:Title,Body:Body},callback:function(res){
+                        alert('The alert email (to: '+To+') has been sent out');
+                    }})
+                }
+            }});
+        }
+        //---------------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/toolbar/toolbar.css
+    VmInclude:__BASE__/vmiis/Common-Code/grid/form.css
+    #F__ID input[type="radio"]
+    {vertical-align: middle;
+    margin: 0 0 0 4px;
+     }
+    #F__ID input[type="checkbox"]
+     {vertical-align: middle;
+    }
+    #F__ID  label {
+        /*font-size: 10pt;*/
+        font-style: italic;
+    }
+    #save_Send_email__ID,#save_Send_email_2__ID,#save_Send_operation_email__ID{
+        background-color:#697b7b;
+        border:0px solid #18ab29;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font: 9pt/30px Arial;
+        padding-left:15px;
+        padding-right:15px;
+        text-decoration:none;
+        text-shadow:1px 1px 0px #2f6627;
+        -moz-border-radius:8px;
+        -webkit-border-radius:8px;
+        border-radius:8px;
+        transition: all 0.2s ease-in-out;
+    }
+    #save_Send_email__ID:hover {
+    	    background-color:#525959;
+    }
+
+</style>

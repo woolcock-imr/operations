@@ -1,0 +1,81 @@
+<section>
+    <div id=toolbar__ID>
+        <a id=back__ID>Back</a>
+        <span class=tab__ID></span>
+        <span>Start Date:</span> <input type=text id=t1__ID placeholder="Start Date" style='width:80px;padding-left:3px' />
+        End Date: <input type=text id=t2__ID placeholder="End Date" style='width:80px;padding-left:3px' />
+        <a id=query__ID >Query</a>
+        <a id=export__ID >Export</a>
+    	<span class=tab__ID></span><i>Sleep Studies -Range</i> &bull; <b>Research Funded</b>
+    </div>
+    <table id=grid__ID></table>
+</section>
+<script>
+ function F__ID(){
+    //------------------------
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
+    //------------------------
+    var sleep_study_patient_tid=$vm.module_list[_app_id+'sleep_study_research_funded'].var.sleep_study_patient_tid;
+
+    //------------------------
+    _fields="Project,Study_Type,Surname,Givennames,DOB,Study_Date";
+    //-------------------------------------
+    $('#D__ID').on('load',function(){
+    //-------------------------------------
+        var today = new Date();
+        var month = today.getMonth(), year = today.getFullYear();
+        var firstDay = new Date(year, month, 1);
+        $('#t1__ID').datepicker({dateFormat:'dd/mm/yy'});
+        $('#t2__ID').datepicker({dateFormat:'dd/mm/yy'});
+        $('#t1__ID').val($.datepicker.formatDate('dd/mm/yy', firstDay));
+        $('#t2__ID').val($.datepicker.formatDate('dd/mm/yy', today));
+    })
+    $('#query__ID').on('click',function(){_set_req(); _request_data();})
+    //-------------------------------------
+    _set_req=_set_req_export=function(){
+        var sql="with \
+    			study0 as (\
+    				select ID,DT1,\
+    				Study_Date=dbo.F(Information,'Date'), patUID=dbo.F(Information,'Patient_uid'),\
+    				Code=dbo.F(Information,'Code'),Study_Type=dbo.F(Information,'Study_Type'),Project=dbo.F(Information,'Project'),\
+    				[Arrival_Status]=dbo.F(Information,'Arrival_Status'), \
+    				[Cancelled]=dbo.F(Information,'Cancelled'),Reporter=dbo.F(Information,'Reporting_Physician') \
+    				from [TABLE-"+_db_pid+"] where DT1>=@T1 and DT1<=@T2\
+    	      		and dbo.F(Information,'Code')='0' and dbo.F(Information,'Project')<>'' \
+    	      		and dbo.F(Information,'Arrival_Status')<>'Did Not Arrive' \
+    	      		and (dbo.F(Information,'Cancelled')='0' or  dbo.F(Information,'Cancelled')='')\
+    	      	)\
+    			,pat as ( \
+    				select patID=UID, Givennames=dbo.F(Information,'Givennames')\
+    				, Surname=dbo.F(Information,'Surname')\
+    				, Address=dbo.F(Information,'Street_Address')\
+    				, Suburb=dbo.F(Information,'Suburb')\
+    				, State=dbo.F(Information,'State')\
+    				, Postcode=dbo.F(Information,'Postcode')\
+    				, Medicare=dbo.F(Information,'Medicare_Number')\
+    				, Ref=dbo.F(Information,'Ref_Number')\
+    				, DOB=dbo.F(Information,'DOB')\
+    					from [TABLE-"+sleep_study_patient_tid+"]	\
+    			)\
+        	select \
+        		Project,Study_Type, Surname,    Givennames,	DOB,	\
+        		Study_Date\
+         	from study0 join pat on patID=patUID  \
+         	order by Project,Convert(Date,Study_Date,103), Study_Type DESC\
+        ";
+        _req={cmd:'query_records',sql:sql,t1:$('#t1__ID').val(),t2:$('#t2__ID').val()}
+    }
+    //-------------------------------------
+    var _request_data_export=function(){
+        $VmAPI.request({data:_req,callback:function(res){
+            //_records=data_process(res.records);
+            _export_data(_filename);
+        }})
+    }
+    //-------------------------------------
+ }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+</style>

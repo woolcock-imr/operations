@@ -1,0 +1,22 @@
+<section>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
+        VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.2.js
+        //-------------------------------------
+        var fields="Abbreviation,Full_Name";
+        _fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        $('#title__ID').html("<i>Management of Sleep Studies - Monthly</i> &bull; <b>Set-up Abbreviated Type</b>");
+        //-------------------------------------
+        $('#D__ID').on('load',function(){  _set_req(); _request_data(); })
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__BASE__/vmiis/Common-Code/grid/grid.css
+    VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.2.css
+</style>

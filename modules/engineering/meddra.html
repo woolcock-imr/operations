@@ -7,16 +7,16 @@
         VmInclude:__BASE__/vmiis/Common-Code/grid/grid.js
         VmInclude:__BASE__/vmiis/Common-Code/style/ease-in-out.js
         //-------------------------------------
-        _fields="_Form,Short Title,Information,Document";
-        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        _fields="LLT_ID,llt_Name,PT_ID,pt_Name,SOC_ID,soc_Name";
+        _fields+=",Submit Date|DateTime,Submitted by|Author";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-                case 'Document':
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_file.js
-                break;
             }
         }
+        //-------------------------------------
+        $('#new__ID').hide();
+        $('#save__ID').hide();
         //-------------------------------------
         $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
         //-------------------------------------
